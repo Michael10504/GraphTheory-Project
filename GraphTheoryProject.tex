@@ -1,0 +1,134 @@
+\documentclass[12pt, a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage{amsmath, amssymb}
+    \usepackage{amsthm}
+    \usepackage[dvipsnames,svgnames]{xcolor}
+    \usepackage{tikz}
+    \usetikzlibrary{arrows.meta, angles, quotes, calc}
+    \usepackage[most]{tcolorbox}
+    \usepackage[a4paper, total={6.5in, 9in}]{geometry}
+    \usepackage{tikz}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \newcommand{\rn}[2]{\tikz[remember picture,baseline=(#1.base)]\node[inner sep=0] (#1) {$#2$};}
+    \usetikzlibrary{matrix,arrows.meta}
+    \tcbuselibrary{theorems}
+
+    \newtcbtheorem[
+    auto counter, 
+    number within=section
+    ]{theorem}{Theorem}{
+    breakable, % <--- Allow page breaks
+    colback=RawSienna!10!white, colframe=RawSienna!100!black,
+    fonttitle=\bfseries, coltitle=white,
+    boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
+    separator sign={.}
+    }{thm}
+
+\newtcbtheorem[
+    use counter from=theorem
+    ]{corollary}{Corollary}{
+    breakable, % <--- Allow page breaks
+    colback=Orange!10!white, colframe=Orange!100!black,
+    fonttitle=\bfseries, coltitle=white,
+    boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
+    separator sign={.}
+    }{cor}
+
+\newtcbtheorem[
+    use counter from=theorem
+    ]{lemma}{Lemma}{
+    breakable, % <--- Allow page breaks
+    colback=TealBlue!10!white, colframe=TealBlue!100!black,
+    fonttitle=\bfseries, coltitle=white,
+    boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
+    separator sign={.}
+    }{lem}
+
+\newtcbtheorem[
+    use counter from=theorem
+    ]{definition}{Definition}{
+    breakable, % <--- Allow page breaks
+    colback=RoyalBlue!10!white, colframe=RoyalBlue!100!black,
+    fonttitle=\bfseries, coltitle=white,
+    boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
+    separator sign={.}
+    }{def}
+
+\newtcbtheorem[
+    use counter from=theorem
+    ]{example}{Example}{
+    breakable, % <--- Allow page breaks
+    colback=Blue!10!white, colframe=Blue!100!black,
+    fonttitle=\bfseries, coltitle=white,
+    boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
+    separator sign={.}
+    }{ex}
+
+
+    \DeclareMathOperator*{\id}{id}
+    \DeclareMathOperator{\dist}{d}
+    \DeclareMathOperator{\proj}{proj}
+    \newcommand{\R}{\mathbb{R}}
+    \newcommand{\innp}[1]{\langle #1 \rangle}
+
+
+    \renewcommand\qedsymbol{$\blacksquare$}
+    \renewcommand{\restriction}{\mathord{\upharpoonright}}
+
+    \binoppenalty=\maxdimen
+    \relpenalty=\maxdimen
+
+    \title{\textbf{Cops and Robbers: A Graph Theory Game (tentative)}}
+\author{Bassel Shoeib \\ ID: 900231376 \\ Mahmoud AlEskandrani \\ ID: \\ Michael R. Guirgis \\ ID: 900242473 \\ Mohamed A. AboElFotouh \\ ID: \\ The American University in Cairo}
+\date{Spring 2026}
+
+
+    \begin{document}
+
+    \maketitle
+
+    \vspace{1cm}
+\begin{center}
+\textit{"Mathematics is the queen of the sciences and number theory is the queen of mathematics."}\\
+--- Carl Friedrich Gauss
+\end{center}
+
+\vspace{2cm}
+
+\textbf{Abstract.}
+
+
+\newpage
+
+\section{Motivation}
+\section{Introduction}
+\begin{definition}{}{}
+\textcolor{red}{\textbf{Here we define ``a cop'' and ``a robber'', then we define ``a cop-win graph'' and ``a robber-win graph}}
+\end{definition}
+
+\begin{example}{}{}
+\textcolor{red}{\textbf{Investigate famous graphs(cycles, trees, complete graphs)}}
+\end{example}
+
+\begin{lemma}{}{}
+All trees and complete graphs are cop-win graphs. 
+\end{lemma}
+
+\begin{lemma}{}{}
+All cycles are robber-win graphs.
+\end{lemma}
+
+\newpage
+
+\section{Cop-win graphs}
+\begin{definition}{Pitfall}{}
+
+\end{definition}
+
+\begin{theorem}{}{}
+A graph that can be reduced to a single vertex through the successive removal of pitfalls is a cop-win graph.
+\end{theorem}
+
+
+\end{document}
