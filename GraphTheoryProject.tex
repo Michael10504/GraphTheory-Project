@@ -37,6 +37,16 @@
 
 \newtcbtheorem[
     use counter from=theorem
+    ]{remark}{Remark}{
+    breakable, % <--- Allow page breaks
+    colback=ForestGreen!10!white, colframe=ForestGreen!100!black,
+    fonttitle=\bfseries, coltitle=white,
+    boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
+    separator sign={.}
+    }{rem}
+    
+\newtcbtheorem[
+    use counter from=theorem
     ]{lemma}{Lemma}{
     breakable, % <--- Allow page breaks
     colback=TealBlue!10!white, colframe=TealBlue!100!black,
@@ -138,13 +148,35 @@ A graph is cop-win \textit{iff} it can be reduced to a single vertex through the
 
 \section{Multiple Cop graphs}
 %_________________________________________________________________________________________________   AboElFotouh, Michael _________________________________________________________________________________________________
-Having established the structural characteristics of cop-win and robber-win graphs in the single-cop scenario, we now generalize the analysis to include multiple cops in a graph.
+Having established the structural characteristics of cop-win and robber-win graphs in the single-cop scenario, we now generalize the analysis to include multiple cops in a graph. Assume, instead of one cop, $k$ cops, denoted by $C_1, \dots, C_k$, are chasing the robber. The cops are placed first on $G$, then the robber. In the cops' turn, only one of them moves.
 
 \begin{definition}{Cop Number}{}
-We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number of cops that is enough to ensure the cops can catch the robber.
+We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number of cops that is enough to ensure that the cops can catch the robber.
 \end{definition}
 
-Since our analysis only involves finite simple graphs, the cop number is clearly well-defined since $\mathcal{C}(G) \leq n$ for any graph $G$ where $|G| = n$.
+\begin{remark}{}{}
+    Since our analysis involves only simple finite graphs, the cop number is clearly finite since $\mathcal{C}(G) \leq n$ for any graph $G$ where $|G| = n$.
+\end{remark}
+
+\begin{definition}{Dominating Set}{}
+    A dominating set of a graph $G$ is a set $S \subseteq V_G$ such that every vertex in $G$ is either in $S$ or is adjacent to at least one vertex in $S$.
+\end{definition}
+
+\begin{definition}{Domination Number}{}
+    The domination number of a graph $G$, $\beta(G)$, is the cardinality of the minimum dominating set of $G$.
+\end{definition}
+
+\begin{remark}{}{}
+    Given an arbitrary graph $G$, clearly, $\mathcal{C}(G) \leq \beta(G)$.
+\end{remark}
+
+\begin{theorem}{}{}
+    Any graph $G$ with no 3- or 4-cycles and $\delta(G) \geq n$ has $\mathcal{C}(G) \geq n$.
+\end{theorem}
+\begin{proof}
+    Let $C$ have $n - 1$ cops distributed on the vertices $\{v_1, v_2, \dots, v_{n-1}\}$. Pick a vertex $w$ such that $w \notin \{v_1, \dots, v_{n-1}\}$ (Such $w$ exists as $\delta(G) \geq n, |G| \geq n + 1$). Suppose $w$ has $l$ neighbors and $N(w) = \{v_1, \dots, v_k, w_1, \dots, w_{l-k}\}$ where $w_i \notin \{v_1, \dots, v_{n-1}\}$. Notice that $l \geq n$ and $k \leq n - 1$. Thus, $l - k \geq 1$. For the sake of contradiction, assume $\{v_1, \dots, v_{n - 1}\}$ is a dominating set in $G$. This means that the $N(w_i)$'s must contain one $v_j$. If $j \leq k$, then there exists a 3-cycle $(w, w_i, v_j, w)$, a contradiction. So, we get that $j \geq k + 1$. Also, since $G$ has no 4-cycle, $N(w_i) \cap N(w_m) = \{w\}$ for $i \neq m$. So, every $w_i$ must be adjacent to a unique $v_j$. Counting the total number of vertices in the dominating set, we get that $|\{v_1, \dots, v_{n - 1}\}| \geq k + (l - k) = l$. Thus, $n -1 \geq l$, a contradiction.\\\\
+    Hence after placing the cops, say $\{C_1,\dots, C_{n-1}\}$, $R$ is able to place himself on a vertex $r$ which is neither equal to nor adjacent to any of the $C_i$'s. But $R$ can keep up this situation because, after every move of the cops, at most $n-1$ of $R$’s neighbors are covered by cops (no 3- or 4-cycles), thus allowing $R$ to go to the free neighbor. 
+\end{proof}
 \begin{theorem}{}{}
     Any planar graph $G$ has $\mathcal{C}(G) \leq 3$.
 \end{theorem}
