@@ -124,12 +124,48 @@
 
 %_________________________________________________________________________________________________  Bassel   ______________________________________________________________
 \begin{lemma}{}{}
-All trees and complete graphs are cop-win graphs. 
+All trees and complete graphs are cop-win graphs.
 \end{lemma}
 
-\begin{lemma}{}{}
-All cycles are robber-win graphs.
+\begin{proof}
+We consider the two classes of graphs separately.
+
+\textbf{Complete graphs:}  
+Let $K_n$ be a complete graph on $n$ vertices. Since every pair of distinct vertices is adjacent, the cop may start at any vertex. After the robber chooses a starting vertex, the cop can move directly to that vertex in one move. Hence the robber is captured immediately, and so every complete graph is cop-win.
+
+\textbf{Trees:}  
+Let $T$ be a finite tree. Since $T$ is connected and acyclic, there is a unique path between any two vertices. For vertices $u,v \in V(T)$, denote by $d(u,v)$ the distance (number of edges on the unique path) between the two vertices $u$ and $v$.
+
+Let $c_k$ and $r_k$ be the positions of the cop and robber, respectively, at the beginning of round $k$ (with $k=1$ being the initial positions). The cop's strategy is as follows: at round $k$, if $c_k \neq r_k$, the cop moves to the unique neighbor $c_{k+1}$ of $c_k$ that lies on the $c_k$-$r_k$ path. This move satisfies $d(c_{k+1}, r_k) = d(c_k, r_k) - 1$. The robber then moves from $r_k$ to an adjacent vertex (or stays put), producing $r_{k+1}$.
+
+We analyze the distance after each round. After the cop's move, the distance to the robber's current position is $d(c_{k+1}, r_k) = d(c_k, r_k) - 1$. The robber's subsequent move can change the distance by at most $1$, so
+\[
+d(c_{k+1}, r_{k+1}) \le d(c_{k+1}, r_k) + 1 = d(c_k, r_k).
+\]
+Thus, defining $d_k = d(c_k, r_k)$, we have $d_{k+1} \le d_k$ for all $k$. The distance is a non-increasing sequence of non-negative integers.
+
+Now suppose the robber never gets captured. Then $d_k > 0$ for all $k$. Since $d_k$ is non-increasing and integer, it must eventually stabilize at some constant $m > 0$; that is, there exists $K$ such that $d_k = m$ for all $k \ge K$. Stabilization implies that for every round $k \ge K$, after the cop's move we have $d(c_{k+1}, r_k) = m-1$, and then the robber must move to a vertex $r_{k+1}$ satisfying $d(c_{k+1}, r_{k+1}) = m$ (otherwise the distance would drop below $m$). This forces the robber to move strictly away from the cop along the unique path each round. Consequently, the robber's positions $r_K, r_{K+1}, r_{K+2}, \dots$ form a simple path extending indefinitely without repetition. But $T$ is finite, so this is impossible. Therefore, our assumption was false, and $d_k$ must eventually reach $0$, meaning the cop captures the robber.
+
+Thus, one cop has a winning strategy on any finite tree.
+
+Therefore, all trees and complete graphs are cop-win graphs.
+\end{proof}\begin{lemma}{}{}
+All cycles of length at least 4 are robber-win graphs.
 \end{lemma}
+
+\begin{proof}
+First note that the cycle $C_3$ is simply the complete graph $K_3$, which is cop-win by the previous lemma.
+
+Now let $C_n$ be a cycle with $n \geq 4$. Suppose there is only one cop.
+
+Since each vertex in $C_n$ has exactly two neighbors, the robber can always maintain a positive distance from the cop by moving around the cycle in the opposite direction whenever necessary. In particular, because the cycle contains at least four vertices, the robber has enough space to avoid being cornered.
+
+More precisely, after observing the cop's position, the robber chooses an initial vertex not occupied by the cop and at distance at least $2$ from the cop. At each subsequent move, if the cop moves toward the robber along one direction of the cycle, the robber moves in the opposite direction. Since the graph is a cycle, this allows the robber to continuously preserve separation from the cop.
+
+Because every vertex in $C_n$ has exactly two neighbors and the graph forms a closed loop, the cop cannot force the robber into a trapped position. Thus, the robber can avoid getting captured indefinitely. Therefore, $C_n$ is robber-win for all $n \geq 4$.
+
+Hence, all cycles of length at least $4$ are robber-win graphs.
+\end{proof}
 %____________________________________________________________________________________________________
 \newpage
 
