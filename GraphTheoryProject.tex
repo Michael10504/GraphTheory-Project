@@ -432,12 +432,22 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
     Let $C$ have $n - 1$ cops distributed on the vertices $\{v_1, v_2, \dots, v_{n-1}\}$. Pick a vertex $w$ such that $w \notin \{v_1, \dots, v_{n-1}\}$ (Such $w$ exists as $\delta(G) \geq n, |G| \geq n + 1$). Suppose $w$ has $l$ neighbors and $N(w) = \{v_1, \dots, v_k, w_1, \dots, w_{l-k}\}$ where $w_i \notin \{v_1, \dots, v_{n-1}\}$. Notice that $l \geq n$ and $k \leq n - 1$. Thus, $l - k \geq 1$. For the sake of contradiction, assume $\{v_1, \dots, v_{n - 1}\}$ is a dominating set in $G$. This means that the $N(w_i)$'s must contain one $v_j$. If $j \leq k$, then there exists a 3-cycle $(w, w_i, v_j, w)$, a contradiction. So, we get that $j \geq k + 1$. Also, since $G$ has no 4-cycle, $N(w_i) \cap N(w_m) = \{w\}$ for $i \neq m$. So, every $w_i$ must be adjacent to a unique $v_j$. Counting the total number of vertices in the dominating set, we get that $|\{v_1, \dots, v_{n - 1}\}| \geq k + (l - k) = l$. Thus, $n -1 \geq l$, a contradiction.\\\\
     Hence after placing the cops, say $\{C_1,\dots, C_{n-1}\}$, $R$ is able to place himself on a vertex $r$ which is neither equal to nor adjacent to any of the $C_i$'s. But $R$ can keep up this situation because, after every move of the cops, at most $n-1$ of $R$’s neighbors are covered by cops (no 3- or 4-cycles), thus allowing $R$ to go to the free neighbor. 
 \end{proof}
+%___________________________________________________ Michael ___________________________________________________ 
+\begin{lemma}{Isometric Path}{}
+    Let G be any graph, $u,v \in V(G) , u \neq v, P = {u, v_1, \dots, v_t = v}$ a shotrest path between u and v. We assume that at least two cops are in play. Then a cop C on P can, after a finite number of moves, prevent the robber R from entering P.  That is, R will be immediately caught if he moves to P.
+\end{lemma}
+
+%______________________________________________________________________________________________________ 
+
 \begin{theorem}{}{}
     Any planar graph $G$ has $\mathcal{C}(G) \leq 3$.
 \end{theorem}
 
 \begin{proof}
-    
+    %case(a) --> AboElFotouh
+     %case(b(i)) --> Bassel
+     %case(b(i)) --> Mahmoud
+
 \end{proof}
 %_________________________________________________________________________________________________
 \newpage
