@@ -433,17 +433,29 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
     Hence after placing the cops, say $\{C_1,\dots, C_{n-1}\}$, $R$ is able to place himself on a vertex $r$ which is neither equal to nor adjacent to any of the $C_i$'s. But $R$ can keep up this situation because, after every move of the cops, at most $n-1$ of $R$’s neighbors are covered by cops (no 3- or 4-cycles), thus allowing $R$ to go to the free neighbor. 
 \end{proof}
 %___________________________________________________ Michael ___________________________________________________ 
-\begin{lemma}{Isometric Path}{}
-    Let G be any graph, $u,v \in V(G) , u \neq v, P = {u, v_1, \dots, v_t = v}$ a shotrest path between u and v. We assume that at least two cops are in play. Then a cop C on P can, after a finite number of moves, prevent the robber R from entering P.  That is, R will be immediately caught if he moves to P.
+\begin{lemma}{Isometric Path Lemma}{}
+    Let G be any graph, $u,v \in V(G) , u \neq v, P = {u, v_1, \dots, v_t = v}$ a shortest path between u and v. We assume that at least two cops are in play. Then a cop C on P can, after a finite number of moves, prevent the robber R from entering P.  That is, R will be immediately caught if he moves to P.
 \end{lemma}
 
 %______________________________________________________________________________________________________ 
-
+\begin{definition}{Robber Territory}{}
+    In a graph $G$ with the robber $R$ at the vertex $r$ and the cops at the vertices $c_1, c_2, \dots, c_n$, the robber territory is the set of vertices that the robber can reach without crossing the current cop-occupied vertices or cop-controlled isometric paths.
+\end{definition}
 \begin{theorem}{}{}
     Any planar graph $G$ has $\mathcal{C}(G) \leq 3$.
 \end{theorem}
 
 \begin{proof}
+Assume $G$ is planar. We aim to assign to the robber in each step $i$ a subset of $V_G$, say $R_i$, which is the current robber territory, showing that after a finite number of cop-moves, $R_i$ can be reduced to $R_{i+1}$ where $R_{i+1} \subset R_i$. Hence, we decrease the robber territory until, eventually, there is no vertex left for the robber to go to.\\
+Initially, all 3 cops $C_1,C_2$ and $C_3$ occupy the vertex $z_0$ and the robber $R$ occupies the vertex $r$. Thus, $R_0$ is defined to be the vertices of the connected component containing $r$ in $G - z_0$. Inductively, at stage $i$ (after $R$'s move), since $G$ is planar, one of the following two cases arises.
+\begin{itemize}
+    \item \textbf{Case A:} Some cop $C$ is at vertex $u$, $R$ is at $r$ and $R_i$ is  defined to be the vertices of the connected component containing $r$ in $G - u$ (Same situation as step 0).
+    \item \textbf{Case B:} %Describe Case B here. Note from Mohamed: I assumed that R_i is a subset of V_G and not a subgraph because it made more sense. If you read the proof from the original paper, keep that in mind while applying it here.
+\end{itemize}
+
+We will now prove that the condition holds in case A.\\
+Suppose $u$ has only one neighbour $v$ in $R_i$. Then, $C$ would move from $u$ to $v$. If $v = r$, then game was over. If not, no matter how $R$ moves next, $R_{i + 1} = R_i - \{v\}$. Hence, we are again back at case A with $R_{i + 1} \subset R_i$ as desired.\\
+If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$. Let $P$ be the shortest path between $a$ and $b$ in $R_i$. By Lemma 3.7, another cop $D$ controls $P$ after a finite number of moves. Thus, we reach case $B$ where cop $C$ controls $P_1 = (a, u, b)$ and cop $D$ controls $P_2 = P$ and $R_{i + 1} \subseteq R_i - V_P \subset R_i$. Thus, the condition still holds as desired.
     %case(a) --> AboElFotouh
      %case(b(i)) --> Bassel
      %case(b(i)) --> Mahmoud
@@ -458,4 +470,4 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
 
 \subsection{Drunk Robbers Variation}
 
-\end{document}
+\end{document}S
