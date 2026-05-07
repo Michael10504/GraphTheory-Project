@@ -7,7 +7,6 @@
     \usetikzlibrary{arrows.meta, angles, quotes, calc}
     \usepackage[most]{tcolorbox}
     \usepackage[a4paper, total={6.5in, 9in}]{geometry}
-    \usepackage{tikz}
     \usepackage{url}
     \usepackage{hyperref}
     \usepackage{graphicx}
@@ -76,13 +75,11 @@
     separator sign={.}
     }{ex}
 
-
     \DeclareMathOperator*{\id}{id}
     \DeclareMathOperator{\dist}{d}
     \DeclareMathOperator{\proj}{proj}
     \newcommand{\R}{\mathbb{R}}
     \newcommand{\innp}[1]{\langle #1 \rangle}
-
 
     \renewcommand\qedsymbol{$\blacksquare$}
     \renewcommand{\restriction}{\mathord{\upharpoonright}}
@@ -91,9 +88,8 @@
     \relpenalty=\maxdimen
 
     \title{\textbf{Cops and Robbers: A Graph Theory Game (tentative)}}
-\author{Bassel Shoeib \\ ID: 900231376 \\ Mahmoud AlEskandrani \\ ID:900241828 \\ Michael R. Guirgis \\ ID: 900242473 \\ Mohamed A. AboElFotouh \\ ID:900248219 \\ The American University in Cairo}
+\author{Bassel Shoeib \\ ID: 900231376 \\ Mahmoud AlAskndrani \\ ID:900241828 \\ Michael R. Guirgis \\ ID: 900242473 \\ Mohamed A. AboElFotouh \\ ID:900248219 \\ The American University in Cairo}
 \date{Spring 2026}
-
 
     \begin{document}
 
@@ -117,6 +113,7 @@
 \textbf{Motivation: }Imagine you are in a city in which there is a single cop actively pursuing a robber. Assume that each of them knows the layout of the city and the exact location of the other at all times, and that they take alternating turns moving from one location to an adjacent one. Can the robber escape safely and outrun the cop? 
 
 This situation can be modeled by a connected, simple, finite graph $G(V, E)$, where $V(G)$ represents all possible locations the robber and the cop can reach and $E(G)$ represent the streets. We formally define a cop, a robber, a cop-win graph and a robber-win graph.
+
 \begin{center}
     \includegraphics[width=0.7\textwidth]{Cop-robber illustration.png} \\
     \textit{A visual representation of the Cops and Robbers game on a city graph.}
@@ -197,7 +194,9 @@ Now suppose the robber never gets captured. Then $d_k > 0$ for all $k$. Since $d
 Thus, one cop has a winning strategy on any finite tree.
 
 Therefore, all trees and complete graphs are cop-win graphs.
-\end{proof}\begin{lemma}{}{}
+\end{proof}
+
+\begin{lemma}{}{}
 All cycles of length at least 4 are robber-win graphs.
 \end{lemma}
 
@@ -400,7 +399,6 @@ A finite graph is cop-win \textit{iff} it can be reduced to a single vertex thro
 \end{proof}
 \newpage
 
-
 \section{Multiple Cop graphs}
 %_________________________________________________________________________________________________   AboElFotouh, Michael _________________________________________________________________________________________________
 Having established the structural characteristics of cop-win and robber-win graphs in the single-cop scenario, we now generalize the analysis to include multiple cops in a graph. Assume, instead of one cop, $k$ cops, denoted by $C_1, \dots, C_k$, are chasing the robber. The cops are placed first on $G$, then the robber. In the cops' turn, only one of them moves.
@@ -449,17 +447,24 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
 Assume $G$ is planar. We aim to assign to the robber in each step $i$ a subset of $V_G$, say $R_i$, which is the current robber territory, showing that after a finite number of cop-moves, $R_i$ can be reduced to $R_{i+1}$ where $R_{i+1} \subset R_i$. Hence, we decrease the robber territory until, eventually, there is no vertex left for the robber to go to.\\
 Initially, all 3 cops $C_1,C_2$ and $C_3$ occupy the vertex $z_0$ and the robber $R$ occupies the vertex $r$. Thus, $R_0$ is defined to be the vertices of the connected component containing $r$ in $G - z_0$. Inductively, at stage $i$ (after $R$'s move), since $G$ is planar, one of the following two cases arises.
 \begin{itemize}
-    \item \textbf{Case A:} Some cop $C$ is at vertex $u$, $R$ is at $r$ and $R_i$ is  defined to be the vertices of the connected component containing $r$ in $G - u$ (Same situation as step 0).
-    \item \textbf{Case B:} %Describe Case B here. Note from Mohamed: I assumed that R_i is a subset of V_G and not a subgraph because it made more sense. If you read the proof from the original paper, keep that in mind while applying it here.
+    \item \textbf{Case A:} Some cop $C_1$ is at vertex $u$, $R$ is at $r$ and $R_i$ is defined to be the vertices of the connected component containing $r$ in $G - u$ (Same situation as step 0). The other two cops are free.
+    \item \textbf{Case B:} The robber territory $R_i$ is bounded by two isometric paths $P_1$ and $P_2$ controlled by cops $C_1$ and $C_2$ respectively, which meet at a vertex $u$. The third cop $C_3$ is free.
 \end{itemize}
 
 We will now prove that the condition holds in case A.\\
-Suppose $u$ has only one neighbour $v$ in $R_i$. Then, $C$ would move from $u$ to $v$. If $v = r$, then game was over. If not, no matter how $R$ moves next, $R_{i + 1} = R_i - \{v\}$. Hence, we are again back at case A with $R_{i + 1} \subset R_i$ as desired.\\
-If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$. Let $P$ be the shortest path between $a$ and $b$ in $R_i$. By Lemma 3.7, another cop $D$ controls $P$ after a finite number of moves. Thus, we reach case $B$ where cop $C$ controls $P_1 = (a, u, b)$ and cop $D$ controls $P_2 = P$ and $R_{i + 1} \subseteq R_i - V_P \subset R_i$. Thus, the condition still holds as desired.
-    %case(a) --> AboElFotouh
-     %case(b(i)) --> Bassel
-     %case(b(i)) --> Mahmoud
+Suppose $u$ has only one neighbour $v$ in $R_i$. Then, $C_1$ would move from $u$ to $v$. If $v = r$, then game was over. If not, no matter how $R$ moves next, $R_{i + 1} = R_i - \{v\}$. Hence, we are again back at case A with $R_{i + 1} \subset R_i$ as desired.\\
+If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$. Let $P$ be the shortest path between $a$ and $b$ in $R_i$. By Lemma 3.7, another free cop $C_2$ controls $P$ after a finite number of moves. Thus, we reach case $B$ where cop $C_1$ controls $P_1 = (a, u, b)$ and cop $C_2$ controls $P_2 = P$ and $R_{i + 1} \subseteq R_i - V_P \subset R_i$. Thus, the condition still holds as desired.
 
+We now address Case B.
+\begin{itemize}
+    \item \textbf{Case B(i):} %bassel %
+    \item \textbf{Case B(ii):} Suppose that the robber territory $R_i$ is adjacent to both $P_1$ and $P_2$. Let $x \in V(P_1)$ and $y \in V(P_2)$ be vertices that have neighbors inside $R_i$. We can define $Q$ as a shortest path between $x$ and $y$ such that all internal vertices of $Q$ lie strictly within the robber's territory $R_i$.
+    
+    By the Isometric Path Lemma (Lemma 3.7), the free cop $C_3$ can move to control the path $Q$ in a finite number of moves, and the robber cannot cross $Q$ without being captured. Because the graph $G$ is planar, the union of the path segment from $u$ to $x$ on $P_1$, the path segment from $u$ to $y$ on $P_2$, and the new path $Q$ forms a closed cycle that divides the plane. The robber is therefore forced into a new territory $R_{i+1}$ which is strictly contained within $R_i$ (since $Q$ cuts through $R_i$).
+    
+    Crucially, the boundary of this new, smaller territory $R_{i+1}$ is now formed by $Q$ and at most one of the original paths (or a combination that forms two new isometric paths). Because the new boundary requires at most two cops to control (for example, $C_3$ on $Q$ and $C_1$ on $P_1$), the remaining cop ($C_2$) is freed. We have successfully reduced the robber's territory so that $R_{i+1} \subset R_i$ while maintaining a free cop.
+\end{itemize}
+Since in all cases we can strictly reduce the robber's territory while maintaining the required number of free cops, the induction process continues until the territory is empty and the robber is caught. Therefore, $\mathcal{C}(G) \leq 3$.
 \end{proof}
 %_________________________________________________________________________________________________
 \newpage
@@ -470,4 +475,4 @@ If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$
 
 \subsection{Drunk Robbers Variation}
 
-\end{document}S
+\end{document}
