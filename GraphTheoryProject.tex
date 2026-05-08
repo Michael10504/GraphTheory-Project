@@ -457,7 +457,13 @@ If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$
 
 We now address Case B.
 \begin{itemize}
-    \item \textbf{Case B(i):} %bassel %
+    \item \textbf{Case B(i):} Suppose there is no path in $R_i \cup P_1 \cup P_2$ 
+from $u$ to $v$ other than $P_1$ and $P_2$. Then $R_i$ consists of disjoint 
+components $A, B, C, \ldots$ attached to vertices of $P_1 \cup P_2$. Let $r$ be contained in component $A$, attached to a vertex $a$ 
+on, say, $P_1$. The free cop $C_3$ moves to $a$ (while $C_1$ and $C_2$ 
+maintain control of $P_1$ and $P_2$ respectively), and we are back to 
+Case~(a) with $u = a$ and $R_{i+1} = A$, so that $R_{i+1} \subsetneq R_i$ as required.
+
     \item \textbf{Case B(ii):} Suppose that the robber territory $R_i$ is adjacent to both $P_1$ and $P_2$. Let $x \in V(P_1)$ and $y \in V(P_2)$ be vertices that have neighbors inside $R_i$. We can define $Q$ as a shortest path between $x$ and $y$ such that all internal vertices of $Q$ lie strictly within the robber's territory $R_i$.
     
     By the Isometric Path Lemma (Lemma 3.7), the free cop $C_3$ can move to control the path $Q$ in a finite number of moves, and the robber cannot cross $Q$ without being captured. Because the graph $G$ is planar, the union of the path segment from $u$ to $x$ on $P_1$, the path segment from $u$ to $y$ on $P_2$, and the new path $Q$ forms a closed cycle that divides the plane. The robber is therefore forced into a new territory $R_{i+1}$ which is strictly contained within $R_i$ (since $Q$ cuts through $R_i$).
