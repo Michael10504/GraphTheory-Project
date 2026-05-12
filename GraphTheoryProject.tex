@@ -19,7 +19,7 @@
     auto counter, 
     number within=section
     ]{theorem}{Theorem}{
-    breakable, % <--- Allow page breaks
+    breakable,
     colback=RawSienna!10!white, colframe=RawSienna!100!black,
     fonttitle=\bfseries, coltitle=white,
     boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
@@ -29,7 +29,7 @@
 \newtcbtheorem[
     use counter from=theorem
     ]{corollary}{Corollary}{
-    breakable, % <--- Allow page breaks
+    breakable,
     colback=Orange!10!white, colframe=Orange!100!black,
     fonttitle=\bfseries, coltitle=white,
     boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
@@ -39,7 +39,7 @@
 \newtcbtheorem[
     use counter from=theorem
     ]{remark}{Remark}{
-    breakable, % <--- Allow page breaks
+    breakable,
     colback=ForestGreen!10!white, colframe=ForestGreen!100!black,
     fonttitle=\bfseries, coltitle=white,
     boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
@@ -49,7 +49,7 @@
 \newtcbtheorem[
     use counter from=theorem
     ]{lemma}{Lemma}{
-    breakable, % <--- Allow page breaks
+    breakable,
     colback=TealBlue!10!white, colframe=TealBlue!100!black,
     fonttitle=\bfseries, coltitle=white,
     boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
@@ -59,7 +59,7 @@
 \newtcbtheorem[
     use counter from=theorem
     ]{definition}{Definition}{
-    breakable, % <--- Allow page breaks
+    breakable,
     colback=RoyalBlue!10!white, colframe=RoyalBlue!100!black,
     fonttitle=\bfseries, coltitle=white,
     boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
@@ -69,7 +69,7 @@
 \newtcbtheorem[
     use counter from=theorem
     ]{example}{Example}{
-    breakable, % <--- Allow page breaks
+    breakable,
     colback=Blue!10!white, colframe=Blue!100!black,
     fonttitle=\bfseries, coltitle=white,
     boxrule=1pt, arc=3pt, left=1mm, right=1mm, top=1mm, bottom=1mm,
@@ -98,7 +98,7 @@
 
     \vspace{1cm}
 \begin{center}
-\textit{"Mathematics is the queen of the sciences and number theory is the queen of mathematics."}\\
+\textit{``Mathematics is the queen of the sciences and number theory is the queen of mathematics.''}\\
 --- Carl Friedrich Gauss
 \end{center}
 
@@ -425,7 +425,7 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
 \end{theorem}
 \begin{proof}
     Let $C$ have $n - 1$ cops distributed on the vertices $\{v_1, v_2, \dots, v_{n-1}\}$. Pick a vertex $w$ such that $w \notin \{v_1, \dots, v_{n-1}\}$ (Such $w$ exists as $\delta(G) \geq n, |G| \geq n + 1$). Suppose $w$ has $l$ neighbors and $N(w) = \{v_1, \dots, v_k, w_1, \dots, w_{l-k}\}$ where $w_i \notin \{v_1, \dots, v_{n-1}\}$. Notice that $l \geq n$ and $k \leq n - 1$. Thus, $l - k \geq 1$. For the sake of contradiction, assume $\{v_1, \dots, v_{n - 1}\}$ is a dominating set in $G$. This means that the $N(w_i)$'s must contain one $v_j$. If $j \leq k$, then there exists a 3-cycle $(w, w_i, v_j, w)$, a contradiction. So, we get that $j \geq k + 1$. Also, since $G$ has no 4-cycle, $N(w_i) \cap N(w_m) = \{w\}$ for $i \neq m$. So, every $w_i$ must be adjacent to a unique $v_j$. Counting the total number of vertices in the dominating set, we get that $|\{v_1, \dots, v_{n - 1}\}| \geq k + (l - k) = l$. Thus, $n -1 \geq l$, a contradiction.\\\\
-    Hence after placing the cops, say $\{C_1,\dots, C_{n-1}\}$, $R$ is able to place himself on a vertex $r$ which is neither equal to nor adjacent to any of the $C_i$'s. But $R$ can keep up this situation because, after every move of the cops, at most $n-1$ of $R$’s neighbors are covered by cops (no 3- or 4-cycles), thus allowing $R$ to go to the free neighbor. 
+    Hence after placing the cops, say $\{C_1,\dots, C_{n-1}\}$, $R$ is able to place himself on a vertex $r$ which is neither equal to nor adjacent to any of the $C_i$'s. But $R$ can keep up this situation because, after every move of the cops, at most $n-1$ of $R$'s neighbors are covered by cops (no 3- or 4-cycles), thus allowing $R$ to go to the free neighbor. 
 \end{proof}
 
 \begin{lemma}{Isometric Path Lemma}{iso}
@@ -487,10 +487,16 @@ d(c,z)\leq d(r,z)\qquad \forall z\in V(P).
 It follows that if the robber ever enters \(P\), then he is immediately caught.
 \end{proof}
 
+Before stating the main theorem of this section, we recall the classical Jordan Curve Theorem, which we will invoke in the proof. The following statement, and a complete proof, can be found in Tverberg \cite{tverberg1980jordan}.
+
+\begin{theorem}{Jordan Curve Theorem \textnormal{\cite{tverberg1980jordan}}}{JCT}
+    Let $\Gamma$ be a Jordan curve in the plane, that is, the image of the unit circle under an injective continuous map into $\mathbb{R}^2$. Then $\mathbb{R}^2 \setminus \Gamma$ is disconnected and consists of exactly two connected components: one bounded (the \emph{interior}) and one unbounded (the \emph{exterior}).
+\end{theorem}
 
 \begin{definition}{Robber Territory}{}
     In a graph $G$ with the robber $R$ at the vertex $r$ and the cops at the vertices $c_1, c_2, \dots, c_n$, the robber territory is the set of vertices that the robber can reach without crossing the current cop-occupied vertices or cop-controlled isometric paths.
 \end{definition}
+
 \begin{theorem}{}{Aigne}
     Any planar graph $G$ has $\mathcal{C}(G) \leq 3$.
 \end{theorem}
@@ -507,23 +513,51 @@ We will now prove that the condition holds in \textbf{Case (A)}.\\
 Suppose $u$ has only one neighbour $v$ in $R_i$. Then, $C_1$ would move from $u$ to $v$. If $v = r$, then game was over. If not, no matter how $R$ moves next, $R_{i + 1} = R_i - \{v\}$. Hence, we are again back at case A with $R_{i + 1} \subset R_i$ as desired.\\
 If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$. Let $P$ be the shortest path between $a$ and $b$ in $R_i$. By Lemma \ref{lem:iso}, another free cop $C_2$ controls $P$ after a finite number of moves. Thus, we reach case $B$ where cop $C_1$ controls $P_1 = (a, u, b)$ and cop $C_2$ controls $P_2 = P$ and $R_{i + 1} \subseteq R_i - V_P \subset R_i$. Thus, the condition still holds as desired.
 
-We now address Case B.
+We now address \textbf{Case B}.
 \begin{itemize}
     \item \textbf{Case B(i):} Suppose there is no path in $R_i \cup P_1 \cup P_2$ 
 from $u$ to $v$ other than $P_1$ and $P_2$. Then $R_i$ consists of disjoint 
 components $A, B, C, \ldots$ attached to vertices of $P_1 \cup P_2$. Let $r$ be contained in component $A$, attached to a vertex $a$ 
 on, say, $P_1$. The free cop $C_3$ moves to $a$ (while $C_1$ and $C_2$ 
 maintain control of $P_1$ and $P_2$ respectively), and we are back to 
-\textbf{Case(A)} with $u = a$ and $R_{i+1} = A$, so that $R_{i+1} \subsetneq R_i$ as required.
+\textbf{Case (A)} with $u = a$ and $R_{i+1} = A$, so that $R_{i+1} \subsetneq R_i$ as required.
 
-    \item \textbf{Case B(ii):} Suppose that the robber territory $R_i$ is adjacent to both $P_1$ and $P_2$. Let $x \in V(P_1)$ and $y \in V(P_2)$ be vertices that have neighbors inside $R_i$. We can define $Q$ as a shortest path between $x$ and $y$ such that all internal vertices of $Q$ lie strictly within the robber's territory $R_i$.
-    
-    By Lemma \ref{lem:iso} the free cop $C_3$ can move to control the path $Q$ in a finite number of moves, and the robber cannot cross $Q$ without being captured. Because the graph $G$ is planar, the union of the path segment from $u$ to $x$ on $P_1$, the path segment from $u$ to $y$ on $P_2$, and the new path $Q$ forms a closed cycle that divides the plane. The robber is therefore forced into a new territory $R_{i+1}$ which is strictly contained within $R_i$ (since $Q$ cuts through $R_i$).
-    
-    Crucially, the boundary of this new, smaller territory $R_{i+1}$ is now formed by $Q$ and at most one of the original paths (or a combination that forms two new isometric paths). Because the new boundary requires at most two cops to control (for example, $C_3$ on $Q$ and $C_1$ on $P_1$), the remaining cop ($C_2$) is freed. We have successfully reduced the robber's territory so that $R_{i+1} \subset R_i$ while maintaining a free cop.
+    \item \textbf{Case B(ii):} Suppose that the robber territory $R_i$ has vertices adjacent to
+    both $P_1$ and $P_2$. Let $x \in V(P_1)$ and $y \in V(P_2)$ be vertices that have
+    neighbours inside $R_i$, chosen so that the segment of $P_1$ from $u$ to $x$ and the
+    segment of $P_2$ from $u$ to $y$ contain no other vertex adjacent into $R_i$. Let $Q$
+    be a shortest path in $G[R_i \cup \{x,y\}]$ from $x$ to $y$ whose internal vertices lie
+    strictly within $R_i$.
+
+    By the Isometric Path Lemma (Lemma \ref{lem:iso}), the free cop $C_3$ can, in a finite
+    number of moves, take up a position on $Q$ and thereafter prevent the robber from
+    crossing $Q$ without being immediately captured.
+
+    Consider the closed walk $W$ formed by: the segment of $P_1$ from $u$ to $x$,
+    the path $Q$ from $x$ to $y$, and the segment of $P_2$ from $y$ back to $u$.
+    Since $G$ is planar and the three constituent paths share only their endpoints,
+    $W$ traces a simple closed curve in any planar embedding of $G$. By the Jordan
+    Curve Theorem (Theorem \ref{thm:JCT}, \cite{tverberg1980jordan}), this curve divides the plane
+    into exactly two connected regions. The robber, who cannot cross $Q$ (guarded by
+    $C_3$), the segment $ux$ on $P_1$ (guarded by $C_1$), or the segment $uy$ on $P_2$
+    (guarded by $C_2$), is confined to one of these two regions. Define $R_{i+1}$ to be
+    the vertices of $G$ lying in the region that contains the robber's current position
+    $r$. Since $Q$ cuts strictly through $R_i$ and all internal vertices of $Q$ belong to
+    $R_i$, we have $R_{i+1} \subsetneq R_i$.
+
+    It remains to verify that the resulting configuration satisfies one of our two
+    inductive cases and that a free cop is maintained. The new territory $R_{i+1}$ is
+    bounded by two isometric paths meeting at a single vertex: the segment of $P_1$
+    from $u$ to $x$ (still controlled by $C_1$) and the path $Q$ (now controlled by
+    $C_3$), meeting at the vertex $x$. This is exactly the structure required by
+    \textbf{Case (B)}, with the new meeting vertex being $x$ (not $u$). Cop $C_2$, whose
+    path $P_2$ no longer forms part of the boundary of $R_{i+1}$, is thereby freed.
+    Thus we return to \textbf{Case (B)} with one free cop and $R_{i+1} \subsetneq R_i$, as
+    required.
 \end{itemize}
 Since in all cases we can strictly reduce the robber's territory while maintaining the required number of free cops, the induction process continues until the territory is empty and the robber is caught. Therefore, $\mathcal{C}(G) \leq 3$.
 \end{proof}
+
 \begin{example}{}{}
 Consider the following graph. Notice that $\delta(G) = 3$ and the graph is planar. Also, it contains no $3$ or $4$ cycles. So by theorems \ref{thm:Aigne} and \ref{thm:The}, $\mathcal{C}$$(G) = 3$, proving that our bound for cop number is tight. 
 \begin{center}
@@ -561,6 +595,11 @@ Nowakowski, R., and Winkler, P., \textit{Vertex-to-vertex pursuit in a graph}, D
 
 \bibitem{quilliot1983jeux}
 Quilliot, A., \textit{Jeux et pointes fixes sur les graphes}, Th\`ese de 3e cycle, Universit\'e de Paris VI, 1983.
+
+\bibitem{tverberg1980jordan}
+Tverberg, H., \textit{A proof of the Jordan curve theorem}, Bulletin of the London Mathematical Society, 12 (1980), 34--38.
+Available at: \url{https://webhomes.maths.ed.ac.uk/~v1ranick/jordan/tverberg.pdf}
+
 
 \bibitem{youtube2024}
 \url{https://www.youtube.com/watch?v=9mJEu-j1KT0}
