@@ -2,13 +2,14 @@
     \usepackage[utf8]{inputenc}
     \usepackage{amsmath, amssymb}
     \usepackage{amsthm}
+    \usepackage{hyperref}
+    \usepackage{cleveref}
     \usepackage[dvipsnames,svgnames]{xcolor}
     \usepackage{tikz}
     \usetikzlibrary{arrows.meta, angles, quotes, calc}
     \usepackage[most]{tcolorbox}
     \usepackage[a4paper, total={6.5in, 9in}]{geometry}
     \usepackage{url}
-    \usepackage{hyperref}
     \usepackage{graphicx}
     \newcommand{\rn}[2]{\tikz[remember picture,baseline=(#1.base)]\node[inner sep=0] (#1) {$#2$};}
     \usetikzlibrary{matrix,arrows.meta}
@@ -87,8 +88,8 @@
     \binoppenalty=\maxdimen
     \relpenalty=\maxdimen
 
-    \title{\textbf{Cops and Robbers: A Graph Theory Game (tentative)}}
-\author{Bassel Shoeib \\ ID: 900231376 \\ Mahmoud AlAskndrani \\ ID:900241828 \\ Michael R. Guirgis \\ ID: 900242473 \\ Mohamed A. AboElFotouh \\ ID:900248219 \\ The American University in Cairo}
+    \title{\textbf{Cops and Robbers: A Graph Theory Game}}
+\author{Bassel M. Shoeib \\ ID: 900231376 \\ Mahmoud H. AlAskndrani \\ ID:900241828 \\ Michael R. Guirgis \\ ID: 900242473 \\ Mohamed A. AboElFotouh \\ ID:900248219 \\ The American University in Cairo}
 \date{Spring 2026}
 
     \begin{document}
@@ -139,8 +140,8 @@ Let $G(V, E)$ be a connected, simple, finite graph. The game of Cops and Robbers
 \begin{itemize}
     \item All complete graphs $K_n$ are cop-win graphs.
     \item All trees are cop-win graphs. 
-    \item The complete bipartite graphs $K_{1,n}$ are cop-win graphs. 
-    \item All cycles are robber-win graphs. 
+    \item The complete bipartite graphs $K_{m,n}$ for all $m , n \geq 2$ are robber-win graphs. 
+    \item All cycles of length greater than or equal to 4 are robber-win graphs. 
     \item The following graph, which will be examined later, is a cop-win graph. Think about why!
 \begin{center}
 \begin{tikzpicture}[scale=0.8, transform shape, thick, 
@@ -220,10 +221,6 @@ Hence, all cycles of length at least $4$ are robber-win graphs.
 
 \begin{definition}{Pitfall}{}
 Let $G = (V, E)$ be a simple finite graph. 
-\begin{itemize}
-    \item The \textbf{open neighborhood} of a vertex $x \in V$ is the set of all vertices adjacent to $x$, denoted by $N(x) = \{y \in V : xy \in E\}$.
-    \item The \textbf{closed neighborhood} of $x$ is the union of its open neighborhood and the vertex itself, denoted by $N[x] = N(x) \cup \{x\}$.
-\end{itemize}
 A vertex $u \in V$ is called a \textbf{pitfall} (or a corner) if there exists a distinct vertex $v \in N(u)$ such that its closed neighborhood is a subset of the closed neighborhood of $v$, i.e., $N[u] \subseteq N[v]$. In this case, we say that $v$ \textbf{dominates} $u$.
 \end{definition}
 
@@ -423,7 +420,7 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
     Given an arbitrary graph $G$, clearly, $\mathcal{C}(G) \leq \beta(G)$.
 \end{remark}
 
-\begin{theorem}{}{}
+\begin{theorem}{}{The}
     Any graph $G$ with no 3- or 4-cycles and $\delta(G) \geq n$ has $\mathcal{C}(G) \geq n$.
 \end{theorem}
 \begin{proof}
@@ -431,7 +428,7 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
     Hence after placing the cops, say $\{C_1,\dots, C_{n-1}\}$, $R$ is able to place himself on a vertex $r$ which is neither equal to nor adjacent to any of the $C_i$'s. But $R$ can keep up this situation because, after every move of the cops, at most $n-1$ of $R$’s neighbors are covered by cops (no 3- or 4-cycles), thus allowing $R$ to go to the free neighbor. 
 \end{proof}
 
-\begin{lemma}{Isometric Path Lemma}{}
+\begin{lemma}{Isometric Path Lemma}{iso}
     Let G be any graph, $u,v \in V(G) , u \neq v, P = (u, v_1, \dots, v_t = v)$ a shortest path between u and v. We assume that at least two cops are in play. Then a cop C on P can, after a finite number of moves, prevent the robber R from entering P.  That is, R will be immediately caught if he moves to P.
 \end{lemma}
 \begin{proof}
@@ -494,7 +491,7 @@ It follows that if the robber ever enters \(P\), then he is immediately caught.
 \begin{definition}{Robber Territory}{}
     In a graph $G$ with the robber $R$ at the vertex $r$ and the cops at the vertices $c_1, c_2, \dots, c_n$, the robber territory is the set of vertices that the robber can reach without crossing the current cop-occupied vertices or cop-controlled isometric paths.
 \end{definition}
-\begin{theorem}{}{}
+\begin{theorem}{}{Aigne}
     Any planar graph $G$ has $\mathcal{C}(G) \leq 3$.
 \end{theorem}
 
@@ -506,9 +503,9 @@ Initially, all 3 cops $C_1,C_2$ and $C_3$ occupy the vertex $z_0$ and the robber
     \item \textbf{Case B:} The robber territory $R_i$ is bounded by two isometric paths $P_1$ and $P_2$ controlled by cops $C_1$ and $C_2$ respectively, which meet at a vertex $u$. The third cop $C_3$ is free.
 \end{itemize}
 
-We will now prove that the condition holds in case A.\\
+We will now prove that the condition holds in \textbf{Case (A)}.\\
 Suppose $u$ has only one neighbour $v$ in $R_i$. Then, $C_1$ would move from $u$ to $v$. If $v = r$, then game was over. If not, no matter how $R$ moves next, $R_{i + 1} = R_i - \{v\}$. Hence, we are again back at case A with $R_{i + 1} \subset R_i$ as desired.\\
-If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$. Let $P$ be the shortest path between $a$ and $b$ in $R_i$. By Lemma 3.7, another free cop $C_2$ controls $P$ after a finite number of moves. Thus, we reach case $B$ where cop $C_1$ controls $P_1 = (a, u, b)$ and cop $C_2$ controls $P_2 = P$ and $R_{i + 1} \subseteq R_i - V_P \subset R_i$. Thus, the condition still holds as desired.
+If $u$ has more than one neighbour in $R_i$, pick any two neighbours $a$ and $b$. Let $P$ be the shortest path between $a$ and $b$ in $R_i$. By Lemma \ref{lem:iso}, another free cop $C_2$ controls $P$ after a finite number of moves. Thus, we reach case $B$ where cop $C_1$ controls $P_1 = (a, u, b)$ and cop $C_2$ controls $P_2 = P$ and $R_{i + 1} \subseteq R_i - V_P \subset R_i$. Thus, the condition still holds as desired.
 
 We now address Case B.
 \begin{itemize}
@@ -517,16 +514,52 @@ from $u$ to $v$ other than $P_1$ and $P_2$. Then $R_i$ consists of disjoint
 components $A, B, C, \ldots$ attached to vertices of $P_1 \cup P_2$. Let $r$ be contained in component $A$, attached to a vertex $a$ 
 on, say, $P_1$. The free cop $C_3$ moves to $a$ (while $C_1$ and $C_2$ 
 maintain control of $P_1$ and $P_2$ respectively), and we are back to 
-Case~(a) with $u = a$ and $R_{i+1} = A$, so that $R_{i+1} \subsetneq R_i$ as required.
+\textbf{Case(A)} with $u = a$ and $R_{i+1} = A$, so that $R_{i+1} \subsetneq R_i$ as required.
 
     \item \textbf{Case B(ii):} Suppose that the robber territory $R_i$ is adjacent to both $P_1$ and $P_2$. Let $x \in V(P_1)$ and $y \in V(P_2)$ be vertices that have neighbors inside $R_i$. We can define $Q$ as a shortest path between $x$ and $y$ such that all internal vertices of $Q$ lie strictly within the robber's territory $R_i$.
     
-    By the Isometric Path Lemma (Lemma 3.7), the free cop $C_3$ can move to control the path $Q$ in a finite number of moves, and the robber cannot cross $Q$ without being captured. Because the graph $G$ is planar, the union of the path segment from $u$ to $x$ on $P_1$, the path segment from $u$ to $y$ on $P_2$, and the new path $Q$ forms a closed cycle that divides the plane. The robber is therefore forced into a new territory $R_{i+1}$ which is strictly contained within $R_i$ (since $Q$ cuts through $R_i$).
+    By Lemma \ref{lem:iso} the free cop $C_3$ can move to control the path $Q$ in a finite number of moves, and the robber cannot cross $Q$ without being captured. Because the graph $G$ is planar, the union of the path segment from $u$ to $x$ on $P_1$, the path segment from $u$ to $y$ on $P_2$, and the new path $Q$ forms a closed cycle that divides the plane. The robber is therefore forced into a new territory $R_{i+1}$ which is strictly contained within $R_i$ (since $Q$ cuts through $R_i$).
     
     Crucially, the boundary of this new, smaller territory $R_{i+1}$ is now formed by $Q$ and at most one of the original paths (or a combination that forms two new isometric paths). Because the new boundary requires at most two cops to control (for example, $C_3$ on $Q$ and $C_1$ on $P_1$), the remaining cop ($C_2$) is freed. We have successfully reduced the robber's territory so that $R_{i+1} \subset R_i$ while maintaining a free cop.
 \end{itemize}
 Since in all cases we can strictly reduce the robber's territory while maintaining the required number of free cops, the induction process continues until the territory is empty and the robber is caught. Therefore, $\mathcal{C}(G) \leq 3$.
 \end{proof}
+\begin{example}{}{}
+Consider the following graph. Notice that $\delta(G) = 3$ and the graph is planar. Also, it contains no $3$ or $4$ cycles. So by theorems \ref{thm:Aigne} and \ref{thm:The}, $\mathcal{C}$$(G) = 3$, proving that our bound for cop number is tight. 
+\begin{center}
+\begin{tikzpicture}[scale=1.0, every node/.style={circle, draw, fill=black, inner sep=1.5pt}]
+    \foreach \i in {1,...,5} {
+        \node (a\i) at (162 - \i*72: 4) {};
+        \node (b\i) at (162 - \i*72: 3) {};
+        \node (c\i) at (126 - \i*72: 2) {};
+        \node (d\i) at (126 - \i*72: 1) {};
+    }
+    
+    \foreach \i in {1,...,5} {
+        \pgfmathsetmacro{\next}{int(mod(\i,5)+1)}
+        \pgfmathsetmacro{\prev}{int(mod(\i+3,5)+1)}
+        \draw (a\i) -- (a\next);
+        \draw (d\i) -- (d\next);
+        \draw (a\i) -- (b\i);
+        \draw (c\i) -- (d\i);
+        \draw (b\i) -- (c\i);
+        \draw (b\i) -- (c\prev);
+    }
+\end{tikzpicture}
+\end{center}
+\end{example}
+\newpage
+\section{Conclusion}
 
+
+
+\newpage
+\begin{thebibliography}{9}
+\bibitem{nowakowski1983vertex}
+Nowakowski, R., and Winkler, P., \textit{Vertex-to-vertex pursuit in a graph}, Discrete Mathematics, 43 (1983), 235--239.
+
+\bibitem{quilliot1983jeux}
+Quilliot, A., \textit{Jeux et pointes fixes sur les graphes}, Th\`ese de 3e cycle, Universit\'e de Paris VI, 1983.
+\end{thebibliography}
 
 \end{document}
