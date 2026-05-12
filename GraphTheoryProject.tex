@@ -430,12 +430,67 @@ We define the cop number of a graph $G$, $\mathcal{C}(G)$, as the minimum number
     Let $C$ have $n - 1$ cops distributed on the vertices $\{v_1, v_2, \dots, v_{n-1}\}$. Pick a vertex $w$ such that $w \notin \{v_1, \dots, v_{n-1}\}$ (Such $w$ exists as $\delta(G) \geq n, |G| \geq n + 1$). Suppose $w$ has $l$ neighbors and $N(w) = \{v_1, \dots, v_k, w_1, \dots, w_{l-k}\}$ where $w_i \notin \{v_1, \dots, v_{n-1}\}$. Notice that $l \geq n$ and $k \leq n - 1$. Thus, $l - k \geq 1$. For the sake of contradiction, assume $\{v_1, \dots, v_{n - 1}\}$ is a dominating set in $G$. This means that the $N(w_i)$'s must contain one $v_j$. If $j \leq k$, then there exists a 3-cycle $(w, w_i, v_j, w)$, a contradiction. So, we get that $j \geq k + 1$. Also, since $G$ has no 4-cycle, $N(w_i) \cap N(w_m) = \{w\}$ for $i \neq m$. So, every $w_i$ must be adjacent to a unique $v_j$. Counting the total number of vertices in the dominating set, we get that $|\{v_1, \dots, v_{n - 1}\}| \geq k + (l - k) = l$. Thus, $n -1 \geq l$, a contradiction.\\\\
     Hence after placing the cops, say $\{C_1,\dots, C_{n-1}\}$, $R$ is able to place himself on a vertex $r$ which is neither equal to nor adjacent to any of the $C_i$'s. But $R$ can keep up this situation because, after every move of the cops, at most $n-1$ of $R$’s neighbors are covered by cops (no 3- or 4-cycles), thus allowing $R$ to go to the free neighbor. 
 \end{proof}
-%___________________________________________________ Michael ___________________________________________________ 
-\begin{lemma}{Isometric Path Lemma}{}
-    Let G be any graph, $u,v \in V(G) , u \neq v, P = {u, v_1, \dots, v_t = v}$ a shortest path between u and v. We assume that at least two cops are in play. Then a cop C on P can, after a finite number of moves, prevent the robber R from entering P.  That is, R will be immediately caught if he moves to P.
-\end{lemma}
 
-%______________________________________________________________________________________________________ 
+\begin{lemma}{Isometric Path Lemma}{}
+    Let G be any graph, $u,v \in V(G) , u \neq v, P = (u, v_1, \dots, v_t = v)$ a shortest path between u and v. We assume that at least two cops are in play. Then a cop C on P can, after a finite number of moves, prevent the robber R from entering P.  That is, R will be immediately caught if he moves to P.
+\end{lemma}
+\begin{proof}
+Suppose after the robber moves from \(r\) to \(s\), there exists a vertex \(z_0 \in V(P)\) such that
+\[
+d(s,z_0)=d(c,z_0)-1.
+\]
+Then the cop may move one step along the path \(P\) toward \(z_0\), thereby decreasing his distance to \(z_0\) by \(1\). Hence, the condition
+\[
+d(c,z)\leq d(r,z)\qquad \forall z\in V(P)
+\]
+is preserved.
+Observe that if the robber moves onto some vertex \(z \in V(P)\), then
+\[
+d(r,z)=0.
+\]
+Hence,
+\[
+d(c,z)\leq d(r,z)=0,
+\]
+which implies that \(d(c,z)=0\). Therefore, the cop is already on the vertex \(z\), and the robber is immediately caught.
+Therefore, for the robber to be truly threatening, there must exist vertices \(x,y\in V(P)\) lying on opposite sides of the cop \(c\), say \(x<c<y\), such that
+\[
+d(s,x)=d(c,x)-1
+\]
+and
+\[
+d(s,y)\leq d(c,y),
+\]
+or vice versa. In other words, the robber would force the cop to defend one side of the path while simultaneously threatening the other side.
+
+However, this is impossible. Since \(P\) is a shortest path and \(c\) lies between \(x\) and \(y\) on \(P\), we have
+\[
+d(x,y)=d(c,x)+d(c,y).
+\]
+Moreover, by the triangle inequality,
+\[
+d(x,y)\leq d(s,x)+d(s,y).
+\]
+Using the assumptions above, we obtain
+\[
+d(s,x)+d(s,y)
+\leq (d(c,x)-1)+d(c,y).
+\]
+Hence,
+\[
+d(x,y)\leq d(c,x)+d(c,y)-1
+= d(x,y)-1,
+\]
+which is a contradiction.
+
+Therefore, such vertices \(x\) and \(y\) cannot exist. Consequently, the robber can never make a threatening move, and the cop can always move appropriately along \(P\) so as to preserve the condition
+\[
+d(c,z)\leq d(r,z)\qquad \forall z\in V(P).
+\]
+It follows that if the robber ever enters \(P\), then he is immediately caught.
+\end{proof}
+
+
 \begin{definition}{Robber Territory}{}
     In a graph $G$ with the robber $R$ at the vertex $r$ and the cops at the vertices $c_1, c_2, \dots, c_n$, the robber territory is the set of vertices that the robber can reach without crossing the current cop-occupied vertices or cop-controlled isometric paths.
 \end{definition}
@@ -472,13 +527,6 @@ Case~(a) with $u = a$ and $R_{i+1} = A$, so that $R_{i+1} \subsetneq R_i$ as req
 \end{itemize}
 Since in all cases we can strictly reduce the robber's territory while maintaining the required number of free cops, the induction process continues until the territory is empty and the robber is caught. Therefore, $\mathcal{C}(G) \leq 3$.
 \end{proof}
-%_________________________________________________________________________________________________
-\newpage
-\section{Variations of Cops and robbers}
-\subsection{Lazy Cops and Robbers Variation}
 
-\subsection{Attacking Robbers Variation}
-
-\subsection{Drunk Robbers Variation}
 
 \end{document}
