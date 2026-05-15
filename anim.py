@@ -120,86 +120,93 @@ class CopsAndRobbers(Scene):
         self.wait(15)
 
     def part2_geometry(self):
-        title = Text("Part 2: The Geometry of the Getaway").to_edge(UP)
-        self.play(Write(title))
+        self.add_sound("media/audio/Part2_bassel.wav", time_offset=0)   
 
-        # K4 - Complete Graph
+        title = Text("Part 2: The Geometry of the Getaway").to_edge(UP)
+        self.play(Write(title))  # ~1s → t=1
+
+        # ── COMPLETE GRAPH (0–13s) ─────────────────────────────────────────────
         k4_vertices = [1, 2, 3, 4]
         k4_edges = [(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]
         k4 = Graph(k4_vertices, k4_edges, layout="circular").scale(
-            0.8).shift(LEFT * 4 + DOWN*1.5)
+            0.8).shift(LEFT * 4 + DOWN * 1.5)
         k4_label = Text("Complete Graph (Cop Wins)").scale(
             0.4).next_to(k4, UP, buff=0.4)
 
-        cop_k4 = Dot(color=BLUE).scale(1.5).move_to(
-            k4.vertices[1].get_center())
-        robber_k4 = Dot(color=RED).scale(
-            1.5).move_to(k4.vertices[3].get_center())
+        cop_k4 = Dot(color=BLUE).scale(1.5).move_to(k4.vertices[1].get_center())
+        robber_k4 = Dot(color=RED).scale(1.5).move_to(k4.vertices[3].get_center())
 
-        self.play(Create(k4), Write(k4_label))
-        self.play(FadeIn(cop_k4), FadeIn(robber_k4))
-        self.wait(1)
-        self.play(cop_k4.animate.move_to(k4.vertices[3].get_center()))
-        self.play(FadeOut(robber_k4))  # Robber caught
-        self.wait(1)
+        self.play(Create(k4), Write(k4_label))         # ~1s → t=2
+        self.play(FadeIn(cop_k4), FadeIn(robber_k4))   # ~1s → t=3
+        self.wait(4)                                    #        t=7
+        self.play(cop_k4.animate.move_to(
+            k4.vertices[3].get_center()), run_time=1)   #        t=8
+        self.play(FadeOut(robber_k4), run_time=0.5)     #        t=8.5
+        self.wait(4.5)                                  #        t=13 ✓
 
-        # Tree
+        # ── TREES (13–33s) ────────────────────────────────────────────────────
         tree_verts = [1, 2, 3, 4, 5, 6]
         tree_edges = [(1, 2), (2, 3), (2, 4), (1, 5), (5, 6)]
         tree = Graph(tree_verts, tree_edges, layout="tree",
-                     root_vertex=1).scale(0.7).shift(DOWN*1.2)
+                    root_vertex=1).scale(0.7).shift(DOWN * 1.2)
         tree_label = Text("Tree (Cop Wins)").scale(
             0.4).next_to(tree, UP, buff=0.4)
 
-        cop_t = Dot(color=BLUE).scale(1.5).move_to(
-            tree.vertices[1].get_center())
-        robber_t = Dot(color=RED).scale(1.5).move_to(
-            tree.vertices[3].get_center())
+        cop_t = Dot(color=BLUE).scale(1.5).move_to(tree.vertices[1].get_center())
+        robber_t = Dot(color=RED).scale(1.5).move_to(tree.vertices[3].get_center())
 
-        self.play(Create(tree), Write(tree_label))
-        self.play(FadeIn(cop_t), FadeIn(robber_t))
-        self.play(cop_t.animate.move_to(tree.vertices[2].get_center()))
+        self.play(Create(tree), Write(tree_label))      # ~1s → t=14
+        self.play(FadeIn(cop_t), FadeIn(robber_t))      # ~1s → t=15
+        self.wait(3)                                    #        t=18
+        self.play(cop_t.animate.move_to(
+            tree.vertices[2].get_center()), run_time=1) #        t=19
+        self.wait(2)                                    #        t=21
         self.play(robber_t.animate.move_to(
-            tree.vertices[3].get_center()))  # Stuck at leaf
-        self.play(cop_t.animate.move_to(tree.vertices[3].get_center()))
-        self.play(FadeOut(robber_t))
-        self.wait(1)
+            tree.vertices[3].get_center()), run_time=1) #        t=22  (stuck at leaf)
+        self.wait(3)                                    #        t=25
+        self.play(cop_t.animate.move_to(
+            tree.vertices[3].get_center()), run_time=1) #        t=26
+        self.play(FadeOut(robber_t), run_time=0.5)      #        t=26.5
+        self.wait(6.5)                                  #        t=33 ✓
 
-        # C4 - Cycle
+        # ── CYCLES (33s → end) ────────────────────────────────────────────────
         c4_verts = [1, 2, 3, 4]
         c4_edges = [(1, 2), (2, 3), (3, 4), (4, 1)]
         c4 = Graph(c4_verts, c4_edges, layout="circular").scale(
-            0.8).shift(RIGHT * 4 + DOWN*1.5)
+            0.8).shift(RIGHT * 4 + DOWN * 1.5)
         c4_label = Text("Cycle (Robber Wins)").scale(
             0.4).next_to(c4, UP, buff=0.4)
 
-        cop_c4 = Dot(color=BLUE).scale(1.5).move_to(
-            c4.vertices[1].get_center())
-        robber_c4 = Dot(color=RED).scale(
-            1.5).move_to(c4.vertices[3].get_center())
+        cop_c4 = Dot(color=BLUE).scale(1.5).move_to(c4.vertices[1].get_center())
+        robber_c4 = Dot(color=RED).scale(1.5).move_to(c4.vertices[3].get_center())
 
-        self.play(Create(c4), Write(c4_label))
-        self.play(FadeIn(cop_c4), FadeIn(robber_c4))
+        self.play(Create(c4), Write(c4_label))          # ~1s → t=34
+        self.play(FadeIn(cop_c4), FadeIn(robber_c4))    # ~1s → t=35
+        self.wait(2)                                    #        t=37
 
-        # Chase in circle
+        # Chase loop — each full loop is 4 × 0.6s = 2.4s; 3 loops = 7.2s → t≈44
         for _ in range(3):
             self.play(
                 cop_c4.animate.move_to(c4.vertices[2].get_center()),
-                robber_c4.animate.move_to(c4.vertices[4].get_center())
+                robber_c4.animate.move_to(c4.vertices[4].get_center()),
+                run_time=0.6
             )
             self.play(
                 cop_c4.animate.move_to(c4.vertices[3].get_center()),
-                robber_c4.animate.move_to(c4.vertices[1].get_center())
+                robber_c4.animate.move_to(c4.vertices[1].get_center()),
+                run_time=0.6
             )
             self.play(
                 cop_c4.animate.move_to(c4.vertices[4].get_center()),
-                robber_c4.animate.move_to(c4.vertices[2].get_center())
+                robber_c4.animate.move_to(c4.vertices[2].get_center()),
+                run_time=0.6
             )
             self.play(
                 cop_c4.animate.move_to(c4.vertices[1].get_center()),
-                robber_c4.animate.move_to(c4.vertices[3].get_center())
+                robber_c4.animate.move_to(c4.vertices[3].get_center()),
+                run_time=0.6
             )
-        self.wait(2)
+        self.wait(9.8)
 
     def part3_pitfalls(self):
         title = Text("Part 3: The Secret of 'Pitfalls'").to_edge(UP)
