@@ -8,6 +8,8 @@ class CopsAndRobbers(Scene):
         self.part2_geometry()
         self.clear()
         self.part3_pitfalls()
+        self.clear()
+        self.part4_isometric_path()
 
     def part1_rules(self):
         # --- PART 1 (Total: 14 seconds) ---
@@ -274,3 +276,114 @@ class CopsAndRobbers(Scene):
 
         self.play(FadeIn(cop_w, robber_w), Write(center_text))
         self.wait(3)
+
+    def part4_isometric_path(self):
+        title = Tex("Part 4: The Isometric Path Lemma").to_edge(UP)
+        self.play(Write(title))
+        self.wait(1)
+
+        # Lemma explanation text
+        lemma_text = Tex(
+            r"If a Cop is on a shortest path $P$, \\ they can shadow the Robber and \\ prevent them from entering $P$."
+        ).scale(0.8).next_to(title, DOWN, buff=0.5)
+
+        self.play(Write(lemma_text), run_time=3)
+        self.wait(3)
+
+        # Graph construction
+        # Shortest path P = {1, 2, 3, 4, 5}
+        # Other nodes R_nodes = {6, 7, 8} connected to P
+        verts = [1, 2, 3, 4, 5, 6, 7, 8]
+        edges = [(1, 2), (2, 3), (3, 4), (4, 5), (6, 2),
+                 (7, 3), (8, 4), (6, 7), (7, 8)]
+        layout = {
+            1: LEFT*4 + DOWN*1.5,
+            2: LEFT*2 + DOWN*1.5,
+            3: ORIGIN + DOWN*1.5,
+            4: RIGHT*2 + DOWN*1.5,
+            5: RIGHT*4 + DOWN*1.5,
+            6: LEFT*2 + UP*0.5,
+            7: ORIGIN + UP*0.5,
+            8: RIGHT*2 + UP*0.5
+        }
+
+        g = Graph(verts, edges, layout=layout, labels=True)
+        self.play(Create(g), run_time=2)
+        self.wait(2)
+
+        # Highlight the shortest path P
+        path_edges = [(1, 2), (2, 3), (3, 4), (4, 5)]
+        highlight_anims = []
+        for u, v in path_edges:
+            # Graph uses tuples matching input exactly or ordered. Let's use robust search
+            edge_obj = g.edges.get((u, v)) or g.edges.get((v, u))
+            if edge_obj:
+                highlight_anims.append(edge_obj.animate.set_color(YELLOW))
+
+        for v in [1, 2, 3, 4, 5]:
+            highlight_anims.append(g.vertices[v].animate.set_color(YELLOW))
+
+        self.play(*highlight_anims)
+
+        path_label = Tex(r"Shortest Path $P$", color=YELLOW).scale(
+            0.7).next_to(g.vertices[1], DOWN)
+        self.play(FadeIn(path_label))
+        self.wait(2)
+
+        # Cop and Robber placements
+        cop = Dot(color=BLUE).scale(1.5).move_to(g.vertices[3].get_center())
+        cop_label = Text("Cop", color=BLUE).scale(0.4).next_to(cop, DOWN)
+
+        robber = Dot(color=RED).scale(1.5).move_to(g.vertices[6].get_center())
+        robber_label = Text("Robber", color=RED).scale(0.4).next_to(robber, UP)
+
+        self.play(FadeIn(cop, cop_label), FadeIn(robber, robber_label))
+        self.wait(3)
+
+        # The Chase / Shadowing
+        # Robber moves 6 -> 7
+        self.play(
+            robber.animate.move_to(g.vertices[7].get_center()),
+            robber_label.animate.next_to(g.vertices[7], UP)
+        )
+        self.wait(1)
+
+        # Cop shadows by staying directly beneath the robber
+        self.play(
+            cop.animate.move_to(g.vertices[3].get_center()),
+            cop_label.animate.next_to(g.vertices[3], DOWN)
+        )  # Cop holds position correctly predicting shortest path mapping
+        self.wait(1)
+
+        # Robber moves 7 -> 8
+        self.play(
+            robber.animate.move_to(g.vertices[8].get_center()),
+            robber_label.animate.next_to(g.vertices[8], UP)
+        )
+        self.wait(1)
+
+        # Cop shadows moving 3 -> 4
+        self.play(
+            cop.animate.move_to(g.vertices[4].get_center()),
+            cop_label.animate.next_to(g.vertices[4], DOWN)
+        )
+        self.wait(2)
+
+        # Robber tries to enter P at node 4
+        # Since cop is already at 4, robber gets caught instantly!
+        self.play(
+            robber.animate.move_to(g.vertices[4].get_center()),
+            robber_label.animate.next_to(g.vertices[4], UP),
+            run_time=0.5
+        )
+        # Visual pop to signify capture
+        capture_circle = Circle(color=RED, radius=0.5).move_to(g.vertices[4])
+        self.play(Create(capture_circle), run_time=0.5)
+        self.play(FadeOut(capture_circle), FadeOut(
+            robber, robber_label), run_time=0.5)
+        self.wait(3)
+
+        final_text = Tex(r"Robber is immediately caught upon entering $P$!").scale(
+            0.8).to_edge(DOWN)
+        self.play(Write(final_text))
+        self.wait(4)
