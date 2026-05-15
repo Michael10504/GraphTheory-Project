@@ -10,6 +10,9 @@ class CopsAndRobbers(Scene):
         self.part3_pitfalls()
         self.clear()
         self.part4_isometric_path()
+        self.clear()
+        self.part5_planar_traps()
+        self.clear()
 
     def part1_rules(self):
         # --- PART 1 (Total: 14 seconds) ---
@@ -22,58 +25,38 @@ class CopsAndRobbers(Scene):
 
         vertices = [1, 2, 3, 4, 5]
         edges = [(1, 2), (2, 3), (3, 4), (4, 5), (5, 1), (1, 3)]
-        layout = {1: UP * 1.0, 2: RIGHT * 2, 3: DOWN * 1.5 + RIGHT, 4: DOWN * 2 - RIGHT, 5: LEFT * 2}
-        g = Graph(vertices, edges, layout=layout, labels=True).scale(1.0).shift(UP * 0.5)
+        layout = {1: UP * 1.0, 2: RIGHT * 2, 3: DOWN *
+                  1.5 + RIGHT, 4: DOWN * 2 - RIGHT, 5: LEFT * 2}
+        g = Graph(vertices, edges, layout=layout,
+                  labels=True).scale(1.0).shift(UP * 0.5)
 
         # Creating icons
         bank_icon = VGroup(
-
             Rectangle(width=0.6, height=0.4, color=GRAY, fill_opacity=1),
-
             Text("$", color=GREEN).scale(0.5)
-
         )
-
         bank_lbl_text = Text("Bank").scale(0.4)
-
         bank_label = VGroup(bank_icon, bank_lbl_text).arrange(
-
             DOWN, buff=0.1).next_to(g.vertices[1], UP, buff=0.2)
 
         park_icon = VGroup(
-
             Rectangle(width=0.2, height=0.4, color=DARK_BROWN,
-
                       fill_opacity=1).shift(DOWN * 0.2),
-
             Polygon(LEFT * 0.4, RIGHT * 0.4, UP * 0.4, color=GREEN,
-
                     fill_opacity=1).shift(UP * 0.1)
-
         )
-
         park_lbl_text = Text("Park").scale(0.4)
-
         park_label = VGroup(park_icon, park_lbl_text).arrange(
-
             DOWN, buff=0.1).next_to(g.vertices[3], DOWN, buff=0.2)
 
         res_icon = VGroup(
-
             Rectangle(width=0.6, height=0.4, color=BLUE,
-
                       fill_opacity=1).shift(DOWN * 0.2),
-
             Polygon(LEFT * 0.4, RIGHT * 0.4, UP * 0.4, color=RED,
-
                     fill_opacity=1).shift(UP * 0.2)
-
         )
-
         res_lbl_text = Text("Residential").scale(0.4)
-
         res_label = VGroup(res_icon, res_lbl_text).arrange(
-
             DOWN, buff=0.1).next_to(g.vertices[5], LEFT, buff=0.2)
 
         self.play(Create(g), FadeIn(bank_label, park_label, res_label))
@@ -88,8 +71,10 @@ class CopsAndRobbers(Scene):
         # Robber shows up at 10.7s (Wait 10.7 - 10 = 0.7)
         self.wait(0.7)
         robber = Dot(color=RED).scale(1.5).move_to(g.vertices[1].get_center())
-        robber_label = Text("Robber", color=RED).scale(0.4).next_to(robber, RIGHT)
-        self.play(FadeIn(robber, robber_label), run_time=1)  # Finishes at t=11.7s
+        robber_label = Text("Robber", color=RED).scale(
+            0.4).next_to(robber, RIGHT)
+        self.play(FadeIn(robber, robber_label),
+                  run_time=1)  # Finishes at t=11.7s
 
         # Moves occur between 12.42s and 15.54s (Wait 12.42 - 11.7 = 0.72)
         self.wait(0.72)
@@ -107,14 +92,17 @@ class CopsAndRobbers(Scene):
 
         # Perfect Information at 18.84s (Wait 18.84 - 15.54 = 3.3)
         self.wait(3.3)
-        info_text = Text("PERFECT INFORMATION!", color=YELLOW, font_size=40).to_edge(DOWN)
+        info_text = Text("PERFECT INFORMATION!", color=YELLOW,
+                         font_size=40).to_edge(DOWN)
         eye = Circle(color=WHITE, radius=0.3).next_to(info_text, LEFT)
         pupil = Dot(color=BLACK).move_to(eye.get_center())
-        self.play(Write(info_text), Create(eye), FadeIn(pupil), run_time=1)  # Finishes at t=19.84s
+        self.play(Write(info_text), Create(eye), FadeIn(
+            pupil), run_time=1)  # Finishes at t=19.84s
 
         # Removed at 22s (Wait 22 - 19.84 = 2.16)
         self.wait(2.16)
-        self.play(FadeOut(cop, cop_label, robber, robber_label), run_time=1)  # Finishes at t=23s
+        self.play(FadeOut(cop, cop_label, robber, robber_label),
+                  run_time=1)  # Finishes at t=23s
 
         # Cop shows up again at 23.16s (Wait 23.16 - 23 = 0.16)
         self.wait(0.16)
@@ -130,6 +118,7 @@ class CopsAndRobbers(Scene):
         self.play(cop.animate.move_to(g.vertices[1].get_center()))
         self.play(FadeOut(robber, run_time=0.1))
         self.wait(15)
+
     def part2_geometry(self):
         title = Text("Part 2: The Geometry of the Getaway").to_edge(UP)
         self.play(Write(title))
@@ -227,13 +216,13 @@ class CopsAndRobbers(Scene):
         self.wait(1)
 
         # Highlight pitfall and attack vertex
-        pitfall_circ = Circle(color=RED).move_to(g.vertices["u"])
-        attack_circ = Circle(color=BLUE).move_to(g.vertices["v"])
+        pitfall_circ = Circle(color=RED, radius=1).move_to(g.vertices["u"])
+        attack_circ = Circle(color=BLUE, radius=1).move_to(g.vertices["v"])
 
         pitfall_text = Text("Pitfall u", color=RED).scale(
-            0.5).next_to(g.vertices["u"], LEFT, buff=0.3)
+            0.5).next_to(g.vertices["u"], UP, buff=0.75)
         attack_text = Text("Attack v", color=BLUE).scale(
-            0.5).next_to(g.vertices["v"], RIGHT, buff=0.3)
+            0.5).next_to(g.vertices["v"], UP, buff=0.75)
         n_text = Text("N[u] is in N[v]", font_size=36).to_edge(DOWN)
 
         self.play(Create(pitfall_circ), Write(pitfall_text))
@@ -386,4 +375,264 @@ class CopsAndRobbers(Scene):
         final_text = Tex(r"Robber is immediately caught upon entering $P$!").scale(
             0.8).to_edge(DOWN)
         self.play(Write(final_text))
+        self.wait(4)
+
+    def part5_planar_traps(self):
+        # Optional: Add your specific audio file for Part 5 here if you have one recorded
+        # self.add_sound("media/audio/Part5.wav")
+
+        title = Text("Part 5: Planar Graphs & The Jordan Curve").to_edge(UP)
+        self.play(Write(title))
+        self.wait(1)
+
+        # ---------------------------------------------------------------------
+        # 1. Background Definitions & Theorem Introduction
+        # ---------------------------------------------------------------------
+        jordan_title = Text("Jordan Curve Theorem",
+                            color=BLUE).scale(0.6).shift(UP*1.2)
+        jordan_desc = Tex(
+            r"A closed loop divides the plane into exactly two pieces:\\",
+            r"a bounded \textbf{interior} and an unbounded \textbf{exterior}."
+        ).scale(0.6).next_to(jordan_title, DOWN, buff=0.2)
+
+        self.play(Write(jordan_title), Write(jordan_desc))
+        self.wait(3)
+        self.play(FadeOut(jordan_title), FadeOut(jordan_desc))
+
+        territory_title = Text("Robber Territory Definition",
+                               color=RED).scale(0.6).shift(UP*1.2)
+        territory_desc = Tex(
+            r"The set of nodes the Robber can reach without crossing\\",
+            r"occupied vertices or cop-controlled isometric paths."
+        ).scale(0.6).next_to(territory_title, DOWN, buff=0.2)
+
+        self.play(Write(territory_title), Write(territory_desc))
+        self.wait(3)
+        self.play(FadeOut(territory_title), FadeOut(territory_desc))
+
+        thm_text = Tex(
+            r"\textbf{Theorem 3.10:} Any planar graph $G$ has Cop Number $C(G) \le 3$.",
+            color=YELLOW
+        ).scale(0.7).shift(UP*1.0)
+        thm_strategy = Text(
+            "Strategy: Structurally shrink the robber territory at each phase.", font_size=24).next_to(thm_text, DOWN)
+
+        self.play(Write(thm_text), FadeIn(thm_strategy))
+        self.wait(3)
+        self.play(FadeOut(thm_text), FadeOut(thm_strategy))
+
+        # ---------------------------------------------------------------------
+        # 2. Inductive Setup: Case A and Case B Side-by-Side
+        # ---------------------------------------------------------------------
+        box_left = Rectangle(width=5.8, height=4.4,
+                             color=GRAY).shift(LEFT*3.2 + DOWN*0.8)
+        box_right = Rectangle(width=5.8, height=4.4,
+                              color=GRAY).shift(RIGHT*3.2 + DOWN*0.8)
+
+        lbl_A = Text("Case A: One Bottleneck Vertex", color=ORANGE).scale(
+            0.45).next_to(box_left, UP, buff=0.1)
+        lbl_B = Text("Case B: Bounded by Two Paths", color=GREEN).scale(
+            0.45).next_to(box_right, UP, buff=0.1)
+
+        self.play(Create(box_left), Create(
+            box_right), Write(lbl_A), Write(lbl_B))
+
+        # Case A Graph
+        va = [1, 2, 3, 4]
+        ea = [(1, 2), (1, 3), (2, 4), (3, 4)]
+        layout_a = {1: LEFT*5.2 + UP*0.2, 2: LEFT*4.0 + UP *
+                    0.8, 3: LEFT*4.0 + DOWN*0.4, 4: LEFT*2.0 + UP*0.2}
+        g_a = Graph(va, ea, layout=layout_a, labels=True,
+                    vertex_config={"radius": 0.25})
+
+        cop_a = Dot(color=BLUE).scale(1.4).move_to(
+            g_a.vertices[1].get_center())
+        robber_a = Dot(color=RED).scale(1.4).move_to(
+            g_a.vertices[4].get_center())
+
+        # Case B Graph
+        vb = [1, 2, 3, 4, 5]
+        eb = [(1, 2), (2, 4), (1, 3), (3, 5), (4, 5)]
+        layout_b = {1: RIGHT*1.5 + UP*0.2, 2: RIGHT*2.8 + UP*0.8, 4: RIGHT *
+                    4.8 + UP*0.6, 3: RIGHT*2.8 + DOWN*0.4, 5: RIGHT*4.8 + DOWN*0.2}
+        g_b = Graph(vb, eb, layout=layout_b, labels=True,
+                    vertex_config={"radius": 0.25})
+
+        cop_b1 = Dot(color=BLUE).scale(1.4).move_to(
+            g_b.vertices[2].get_center())
+        cop_b2 = Dot(color=BLUE).scale(1.4).move_to(
+            g_b.vertices[3].get_center())
+        robber_b = Dot(color=RED).scale(1.4).move_to(
+            g_b.vertices[5].get_center())
+
+        self.play(Create(g_a), Create(g_b))
+        self.play(FadeIn(cop_a, robber_a), FadeIn(cop_b1, cop_b2, robber_b))
+
+        case_explanation = Text(
+            "If u has multiple neighbors, a new shortest path forces Case B.", font_size=18, color=YELLOW).to_edge(DOWN)
+        self.play(Write(case_explanation))
+        self.wait(3.5)
+
+        # Clear Inductive frames to show Case B(ii) in full resolution
+        self.play(
+            FadeOut(box_left), FadeOut(
+                box_right), FadeOut(lbl_A), FadeOut(lbl_B),
+            FadeOut(g_a), FadeOut(g_b), FadeOut(cop_a), FadeOut(robber_a),
+            FadeOut(cop_b1), FadeOut(cop_b2), FadeOut(
+                robber_b), FadeOut(case_explanation)
+        )
+
+        # ---------------------------------------------------------------------
+        # 3. Detailed Trapping Maneuver: Case B(ii)
+        # ---------------------------------------------------------------------
+        sub_title = Text("Case B(ii): Completing the Planar Trap").scale(
+            0.6).to_edge(UP)
+        self.play(Transform(title, sub_title))
+
+        v_trap = ["u", "x", "p1", "y", "p2", "q1", "r"]
+        e_trap = [
+            ("u", "x"), ("x", "p1"),
+            ("u", "y"), ("y", "p2"),
+            ("x", "q1"), ("q1", "y"),
+            ("q1", "r"), ("p1", "r")
+        ]
+        layout_trap = {
+            "u": LEFT * 3,
+            "x": LEFT * 1 + UP * 1.5,
+            "p1": RIGHT * 2 + UP * 1.8,
+            "y": LEFT * 1 + DOWN * 1.5,
+            "p2": RIGHT * 2 + DOWN * 1.8,
+            "q1": ORIGIN,
+            "r": RIGHT * 1.5 + UP * 0.1
+        }
+
+        g_trap = Graph(v_trap, e_trap, layout=layout_trap,
+                       labels=True, vertex_config={"radius": 0.3})
+        self.play(Create(g_trap))
+        self.wait(1)
+
+        # Guard positions
+        cop1 = Dot(color=BLUE).scale(1.5).move_to(
+            g_trap.vertices["u"].get_center())
+        cop2 = Dot(color=BLUE).scale(1.5).move_to(
+            g_trap.vertices["y"].get_center())
+        cop3 = Dot(color=BLUE_A).scale(1.5).move_to(
+            LEFT*5 + DOWN*2)  # Free cop entering scene
+        robber = Dot(color=RED).scale(1.5).move_to(
+            g_trap.vertices["r"].get_center())
+
+        c1_lbl = Text("C1", color=BLUE).scale(0.4).next_to(cop1, UP)
+        c2_lbl = Text("C2", color=BLUE).scale(0.4).next_to(cop2, DOWN)
+        c3_lbl = Text("C3", color=BLUE_A).scale(0.4).next_to(cop3, UP)
+        r_lbl = Text("Robber", color=RED).scale(0.4).next_to(robber, RIGHT)
+
+        self.play(FadeIn(cop1, c1_lbl), FadeIn(cop2, c2_lbl),
+                  FadeIn(cop3, c3_lbl), FadeIn(robber, r_lbl))
+        self.wait(1.5)
+
+        # Highlight path boundaries managed by C1 and C2
+        self.play(
+            (g_trap.edges.get(("u", "x")) or g_trap.edges.get(
+                ("x", "u"))).animate.set_color(GREEN).set_stroke(width=6),
+            (g_trap.edges.get(("x", "p1")) or g_trap.edges.get(
+                ("p1", "x"))).animate.set_color(GREEN).set_stroke(width=6),
+            (g_trap.edges.get(("u", "y")) or g_trap.edges.get(("y", "u"))
+             ).animate.set_color(ORANGE).set_stroke(width=6),
+            (g_trap.edges.get(("y", "p2")) or g_trap.edges.get(
+                ("p2", "y"))).animate.set_color(ORANGE).set_stroke(width=6),
+        )
+        step_lbl = Text("Active paths limit the robber territory.",
+                        font_size=20, color=WHITE).to_edge(DOWN)
+        self.play(Write(step_lbl))
+        self.wait(2)
+
+        # Third cop sweeps inside along shortest path Q
+        q_lbl = Text("Free Cop 3 takes up defensive standing along path Q.",
+                     font_size=20, color=YELLOW).to_edge(DOWN)
+        self.play(Transform(step_lbl, q_lbl))
+        self.play(
+            (g_trap.edges.get(("x", "q1")) or g_trap.edges.get(
+                ("q1", "x"))).animate.set_color(YELLOW).set_stroke(width=6),
+            (g_trap.edges.get(("q1", "y")) or g_trap.edges.get(
+                ("y", "q1"))).animate.set_color(YELLOW).set_stroke(width=6),
+            cop3.animate.move_to(g_trap.vertices["q1"].get_center()),
+            c3_lbl.animate.next_to(g_trap.vertices["q1"], DOWN)
+        )
+        self.wait(2)
+
+        # Highlight the simple closed curve loop
+        jordan_loop = Polygon(
+            g_trap.vertices["u"].get_center(),
+            g_trap.vertices["x"].get_center(),
+            g_trap.vertices["q1"].get_center(),
+            g_trap.vertices["y"].get_center(),
+            color=PURPLE, stroke_width=6, fill_opacity=0.2, fill_color=PURPLE_A
+        )
+        loop_lbl = Text("The Jordan loop splits the map. Robber is locked in!",
+                        font_size=20, color=PURPLE).to_edge(DOWN)
+        self.play(Transform(step_lbl, loop_lbl), Create(jordan_loop))
+        self.wait(3)
+
+        # Shrink the territory and show Cop 2 is freed up
+        free_lbl = Text("Territory shrinks strictly. Cop 2 is now freed!",
+                        font_size=20, color=GREEN).to_edge(DOWN)
+        self.play(Transform(step_lbl, free_lbl))
+        self.play(
+            g_trap.vertices["p2"].animate.set_opacity(0.25),
+            (g_trap.edges.get(("y", "p2")) or g_trap.edges.get(
+                ("p2", "y"))).animate.set_opacity(0.25),
+            cop2.animate.set_color(BLUE_A),
+            c2_lbl.animate.set_color(BLUE_A)
+        )
+        self.wait(3)
+
+        self.clear()
+
+        # ---------------------------------------------------------------------
+        # 4. Example 3.11: Why 3 Cops is a Tight Bound (Cannot be 2)
+        # ---------------------------------------------------------------------
+        ex_title = Text(
+            "Example 3.11: Showing the 3-Cop Bound is Tight").to_edge(UP)
+        self.play(Write(ex_title))
+
+        v_ex = [1, 2, 3, 4, 5, 6, 7, 8]
+        e_ex = [
+            (1, 2), (2, 3), (3, 4), (4, 1),  # Outer perimeter
+            (5, 6), (6, 7), (7, 8), (8, 5),  # Inner perimeter
+            (1, 5), (2, 6), (3, 7), (4, 8)  # Connectors
+        ]
+        layout_ex = {
+            1: UP*2 + LEFT*2, 2: UP*2 + RIGHT*2, 3: DOWN*2 + RIGHT*2, 4: DOWN*2 + LEFT*2,
+            5: UP*0.8 + LEFT*0.8, 6: UP*0.8 + RIGHT*0.8, 7: DOWN*0.8 + RIGHT*0.8, 8: DOWN*0.8 + LEFT*0.8
+        }
+
+        g_ex = Graph(v_ex, e_ex, layout=layout_ex,
+                     labels=True).scale(0.95).shift(DOWN*0.3)
+        self.play(Create(g_ex))
+
+        # Show that 2 cops can't cover all exits due to lack of 3 or 4-cycles
+        cop_ex1 = Dot(color=BLUE).scale(1.5).move_to(
+            g_ex.vertices[1].get_center())
+        cop_ex2 = Dot(color=BLUE).scale(1.5).move_to(
+            g_ex.vertices[3].get_center())
+        robber_ex = Dot(color=RED).scale(1.5).move_to(
+            g_ex.vertices[7].get_center())
+
+        self.play(FadeIn(cop_ex1, cop_ex2, robber_ex))
+
+        tight_lbl = Text(
+            "Without 3 or 4-cycles, 2 cops leave safe escape routes.", font_size=18).to_edge(DOWN)
+        self.play(Write(tight_lbl))
+        self.wait(3)
+
+        # Robber moves away seamlessly when a cop breaks position
+        self.play(
+            cop_ex1.animate.move_to(g_ex.vertices[5].get_center()),
+            robber_ex.animate.move_to(g_ex.vertices[4].get_center()),
+            run_time=1.5
+        )
+
+        final_lbl = Text("Thus, exactly 3 cops are required. The bound is tight!",
+                         color=GREEN).scale(0.5).to_edge(DOWN)
+        self.play(Transform(tight_lbl, final_lbl))
         self.wait(4)
