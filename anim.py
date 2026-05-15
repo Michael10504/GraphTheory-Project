@@ -10,76 +10,124 @@ class CopsAndRobbers(Scene):
         self.part3_pitfalls()
 
     def part1_rules(self):
+        # --- PART 1 (Total: 14 seconds) ---
+        self.add_sound("media/audio/Part1.wav")
+        # Start Part 2 exactly at 14 seconds
+        self.add_sound("media/audio/Part2.wav", time_offset=14)
         title = Text("Part 1: The Rules of the Chase").to_edge(UP)
-        self.play(Write(title))
 
-        # 5-6 Node Graph
+        self.play(Write(title), run_time=1)  # t=1
+
         vertices = [1, 2, 3, 4, 5]
         edges = [(1, 2), (2, 3), (3, 4), (4, 5), (5, 1), (1, 3)]
-        layout = {1: UP*1.0, 2: RIGHT*2, 3: DOWN *
-                  1.5 + RIGHT, 4: DOWN*2 - RIGHT, 5: LEFT*2}
-        g = Graph(vertices, edges, layout=layout,
-                  labels=True).scale(1.0).shift(UP*0.5)
+        layout = {1: UP * 1.0, 2: RIGHT * 2, 3: DOWN * 1.5 + RIGHT, 4: DOWN * 2 - RIGHT, 5: LEFT * 2}
+        g = Graph(vertices, edges, layout=layout, labels=True).scale(1.0).shift(UP * 0.5)
 
-        # Create pictures/icons
+        # Creating icons
         bank_icon = VGroup(
+
             Rectangle(width=0.6, height=0.4, color=GRAY, fill_opacity=1),
+
             Text("$", color=GREEN).scale(0.5)
+
         )
+
         bank_lbl_text = Text("Bank").scale(0.4)
+
         bank_label = VGroup(bank_icon, bank_lbl_text).arrange(
+
             DOWN, buff=0.1).next_to(g.vertices[1], UP, buff=0.2)
 
         park_icon = VGroup(
+
             Rectangle(width=0.2, height=0.4, color=DARK_BROWN,
-                      fill_opacity=1).shift(DOWN*0.2),
-            Polygon(LEFT*0.4, RIGHT*0.4, UP*0.4, color=GREEN,
-                    fill_opacity=1).shift(UP*0.1)
+
+                      fill_opacity=1).shift(DOWN * 0.2),
+
+            Polygon(LEFT * 0.4, RIGHT * 0.4, UP * 0.4, color=GREEN,
+
+                    fill_opacity=1).shift(UP * 0.1)
+
         )
+
         park_lbl_text = Text("Park").scale(0.4)
+
         park_label = VGroup(park_icon, park_lbl_text).arrange(
+
             DOWN, buff=0.1).next_to(g.vertices[3], DOWN, buff=0.2)
 
         res_icon = VGroup(
+
             Rectangle(width=0.6, height=0.4, color=BLUE,
-                      fill_opacity=1).shift(DOWN*0.2),
-            Polygon(LEFT*0.4, RIGHT*0.4, UP*0.4, color=RED,
-                    fill_opacity=1).shift(UP*0.2)
+
+                      fill_opacity=1).shift(DOWN * 0.2),
+
+            Polygon(LEFT * 0.4, RIGHT * 0.4, UP * 0.4, color=RED,
+
+                    fill_opacity=1).shift(UP * 0.2)
+
         )
+
         res_lbl_text = Text("Residential").scale(0.4)
+
         res_label = VGroup(res_icon, res_lbl_text).arrange(
+
             DOWN, buff=0.1).next_to(g.vertices[5], LEFT, buff=0.2)
 
         self.play(Create(g), FadeIn(bank_label, park_label, res_label))
+        self.wait(12)  # t=14 (End of Part 1)
 
-        # Cop and Robber representations (using colored dots)
+        # Cop shows up at 9s
+        self.wait(9)
         cop = Dot(color=BLUE).scale(1.5).move_to(g.vertices[4].get_center())
         cop_label = Text("Cop", color=BLUE).scale(0.4).next_to(cop, RIGHT)
+        self.play(FadeIn(cop, cop_label), run_time=1)  # Finishes at t=10s
+
+        # Robber shows up at 10.7s (Wait 10.7 - 10 = 0.7)
+        self.wait(0.7)
         robber = Dot(color=RED).scale(1.5).move_to(g.vertices[1].get_center())
-        robber_label = Text("Robber", color=RED).scale(
-            0.4).next_to(robber, RIGHT)
+        robber_label = Text("Robber", color=RED).scale(0.4).next_to(robber, RIGHT)
+        self.play(FadeIn(robber, robber_label), run_time=1)  # Finishes at t=11.7s
 
-        self.play(FadeIn(cop, cop_label), FadeIn(robber, robber_label))
-        self.wait(2)
+        # Moves occur between 12.42s and 15.54s (Wait 12.42 - 11.7 = 0.72)
+        self.wait(0.72)
+        # Total move duration is 3.12s. We split it for the two characters.
+        self.play(
+            cop.animate.move_to(g.vertices[3].get_center()),
+            cop_label.animate.next_to(g.vertices[3], RIGHT),
+            run_time=1.56
+        )
+        self.play(
+            robber.animate.move_to(g.vertices[2].get_center()),
+            robber_label.animate.next_to(g.vertices[2], RIGHT),
+            run_time=1.56
+        )  # Finishes at t=15.54s
 
-        # Step 1: Cop moves
-        self.play(cop.animate.move_to(g.vertices[3].get_center(
-        )), cop_label.animate.next_to(g.vertices[3], RIGHT))
-        self.wait(1)
-
-        # Step 2: Robber moves
-        self.play(robber.animate.move_to(g.vertices[2].get_center(
-        )), robber_label.animate.next_to(g.vertices[2], RIGHT))
-        self.wait(1)
-
-        # Perfect information
-        info_text = Text("PERFECT INFORMATION!", color=YELLOW,
-                         font_size=40).to_edge(DOWN)
+        # Perfect Information at 18.84s (Wait 18.84 - 15.54 = 3.3)
+        self.wait(3.3)
+        info_text = Text("PERFECT INFORMATION!", color=YELLOW, font_size=40).to_edge(DOWN)
         eye = Circle(color=WHITE, radius=0.3).next_to(info_text, LEFT)
         pupil = Dot(color=BLACK).move_to(eye.get_center())
-        self.play(Write(info_text), Create(eye), FadeIn(pupil))
-        self.wait(3)
+        self.play(Write(info_text), Create(eye), FadeIn(pupil), run_time=1)  # Finishes at t=19.84s
 
+        # Removed at 22s (Wait 22 - 19.84 = 2.16)
+        self.wait(2.16)
+        self.play(FadeOut(cop, cop_label, robber, robber_label), run_time=1)  # Finishes at t=23s
+
+        # Cop shows up again at 23.16s (Wait 23.16 - 23 = 0.16)
+        self.wait(0.16)
+        cop.move_to(g.vertices[3].get_center())
+        self.play(FadeIn(cop), run_time=1)  # Finishes at t=24.16s
+
+        # Robber shows up again at 28s (Wait 28 - 24.16 = 3.84)
+        self.wait(3.84)
+        robber.move_to(g.vertices[1].get_center())
+        self.play(FadeIn(robber), run_time=1)  # Finishes at t=29.16s
+
+        # Rest of the motion without delay
+        self.play(cop.animate.move_to(g.vertices[1].get_center()))
+        self.play(FadeOut(robber, run_time=0.1))
+        self.wait(15)
     def part2_geometry(self):
         title = Text("Part 2: The Geometry of the Getaway").to_edge(UP)
         self.play(Write(title))
