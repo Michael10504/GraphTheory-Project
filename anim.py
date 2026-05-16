@@ -633,799 +633,458 @@ class CopsAndRobbers(Scene):
 
         self.wait(4.57)  # Reaches local t=38.07s
 
-
     def part5_planar_traps(self):
-
         # Play voiceover at absolute timeline 4:18 (4*60 + 18 = 258s)
-        self.add_sound("media/audio/part5.wav", time_offset=4*60+18)
+        self.add_sound("media/audio/part5.wav")
 
         ACCENT_A = ORANGE
-
         ACCENT_B = GREEN
-
         ACCENT_Q = YELLOW
 
+        # 1-second gap after part 4
+        self.wait(1.0)
 
+        # ==========================================
+        # SEGMENT 1: 0:00 ~ 12:35 (Duration: ~12.35s)
+        # "Welcome to Part 5. To prove three cops can capture..."
+        # ==========================================
+        title = Text("Part 5: Planar Traps & The Jordan Curve",
+                     font_size=42).to_edge(UP)
+        title_rule = Line(LEFT * 5.6, RIGHT * 5.6,
+                          color=GRAY_D).next_to(title, DOWN, buff=0.15)
 
-        title = Text("Part 5: Planar Traps & The Jordan Curve", font_size=42).to_edge(UP)
+        self.play(Write(title), Create(title_rule),
+                  run_time=2.0, rate_func=smooth)
+        self.wait(1.5)
 
-        title_rule = Line(LEFT * 5.6, RIGHT * 5.6, color=GRAY_D).next_to(title, DOWN, buff=0.15)
-
-        self.play(Write(title), Create(title_rule), run_time=1.1, rate_func=smooth)
-        self.wait(1)
-
-
-
-        subtitle = Text("", font_size=26, color=ACCENT_Q).next_to(title_rule, DOWN, buff=0.18)
-
+        subtitle = Text("", font_size=26, color=ACCENT_Q).next_to(
+            title_rule, DOWN, buff=0.18)
         caption_bar = RoundedRectangle(
-
-            corner_radius=0.1,
-
-            width=12.4,
-
-            height=0.9,
-
-            stroke_width=1.6,
-
-            color=GRAY_B,
-
-            fill_color=BLACK,
-
-            fill_opacity=0.35,
-
+            corner_radius=0.1, width=12.4, height=0.9, stroke_width=1.6,
+            color=GRAY_B, fill_color=BLACK, fill_opacity=0.35,
         ).to_edge(DOWN, buff=0.2)
-
         caption = Text("", font_size=20, color=WHITE).move_to(caption_bar)
-
-
 
         self.add(subtitle, caption_bar, caption)
 
-
-
         def set_subtitle(text, color=ACCENT_Q):
-
-            new_subtitle = Text(text, font_size=26, color=color).next_to(title_rule, DOWN, buff=0.18)
-
-            self.play(Transform(subtitle, new_subtitle), run_time=0.55, rate_func=smooth)
-
-
+            new_subtitle = Text(text, font_size=26, color=color).next_to(
+                title_rule, DOWN, buff=0.18)
+            self.play(Transform(subtitle, new_subtitle),
+                      run_time=0.55, rate_func=smooth)
 
         def set_caption(text):
-
-            new_caption = Text(text, font_size=20, color=WHITE).move_to(caption_bar)
-
-            self.play(Transform(caption, new_caption), run_time=0.45, rate_func=smooth)
-
-
+            new_caption = Text(text, font_size=20,
+                               color=WHITE).move_to(caption_bar)
+            self.play(Transform(caption, new_caption),
+                      run_time=0.45, rate_func=smooth)
 
         def case_switch_card(text, color=YELLOW_D):
-
-            card = RoundedRectangle(corner_radius=0.15, width=8.2, height=1.25, color=color, fill_opacity=0.1)
-
+            # Total time per card: 0.65 + 1.0 + 0.55 = 2.2s
+            card = RoundedRectangle(
+                corner_radius=0.15, width=8.2, height=1.25, color=color, fill_opacity=0.1)
             label = Text(text, font_size=26, color=color).move_to(card)
-
-            self.play(FadeIn(card, shift=UP * 0.15), Write(label), run_time=0.65, rate_func=smooth)
-
+            self.play(FadeIn(card, shift=UP * 0.15), Write(label),
+                      run_time=0.65, rate_func=smooth)
             self.wait(1)
+            self.play(FadeOut(card, label, shift=DOWN * 0.15),
+                      run_time=0.55, rate_func=smooth)
 
-            self.play(FadeOut(card, label, shift=DOWN * 0.15), run_time=0.55, rate_func=smooth)
-
-
-
-        # Intro 1: Jordan Curve Theorem with a simple drawing
-
+        # "Jordan Curve Theorem. Simply put..."
         set_subtitle("Jordan Curve Theorem", color=BLUE_C)
-
-        set_caption("A simple closed loop strictly separates a plane into an inside and an outside.")
-
-
+        set_caption(
+            "A simple closed loop strictly separates a plane into an inside and an outside.")
 
         loop = ParametricFunction(
-
             lambda t: np.array([
-
                 2.55 * np.cos(t) + 0.33 * np.cos(3 * t),
-
                 1.65 * np.sin(t) + 0.22 * np.sin(2 * t),
-
                 0,
-
             ]),
-
-            t_range=[0, TAU],
-
-            color=BLUE_C,
-
-            stroke_width=6,
-
+            t_range=[0, TAU], color=BLUE_C, stroke_width=6,
         ).shift(DOWN * 0.55)
-
         inside_fill = loop.copy().set_fill(BLUE_E, opacity=0.28).set_stroke(width=0)
+        interior_lbl = Text("Interior", color=BLUE_E,
+                            font_size=24).move_to(DOWN * 0.55)
+        exterior_lbl = Text("Exterior", color=GRAY_C, font_size=24).to_edge(
+            RIGHT).shift(DOWN * 0.95)
+        tracer = Dot(color=BLUE_B, radius=0.07).move_to(
+            loop.point_from_proportion(0))
 
-        interior_lbl = Text("Interior", color=BLUE_E, font_size=24).move_to(DOWN * 0.55)
-
-        exterior_lbl = Text("Exterior", color=GRAY_C, font_size=24).to_edge(RIGHT).shift(DOWN * 0.95)
-
-        tracer = Dot(color=BLUE_B, radius=0.07).move_to(loop.point_from_proportion(0))
-
-
-
-        self.play(Create(loop), run_time=1.2, rate_func=smooth)
-
-        self.play(MoveAlongPath(tracer, loop), run_time=1.35, rate_func=linear)
-
+        self.play(Create(loop), run_time=1.8, rate_func=smooth)
+        self.play(MoveAlongPath(tracer, loop), run_time=2.0, rate_func=linear)
         self.play(
-
             FadeIn(inside_fill),
-
-            LaggedStart(FadeIn(interior_lbl), FadeIn(exterior_lbl), lag_ratio=0.2),
-
+            LaggedStart(FadeIn(interior_lbl), FadeIn(
+                exterior_lbl), lag_ratio=0.2),
             Flash(tracer, color=BLUE_C, line_length=0.18, flash_radius=0.2),
-
-            run_time=0.95,
-
+            run_time=1.5,
         )
+        self.wait(2.05)
 
-        self.wait(1.2)
-
-
-
-        # Intro 2: Territory definition
-
+        # ==========================================
+        # SEGMENT 2: ~12:50 till 26:00 (Duration: ~13.5s)
+        # "We use this to define the 'Robber Territory'..."
+        # ==========================================
         set_subtitle("Robber Territory: reachable zone", color=RED_C)
+        set_caption(
+            "the set of all vertices the robber can  reach without running into cops or crossing guarded paths.")
 
-        set_caption("Robber Territory: the set of all vertices the robber can  reach without running into cops or crossing guarded paths.")
+        self.play(FadeOut(loop, inside_fill, interior_lbl,
+                  exterior_lbl, tracer), run_time=1.0)
 
-        self.play(FadeOut(loop, inside_fill, interior_lbl, exterior_lbl, tracer), run_time=0.7)
-
-
-
-        territory_blob = Ellipse(width=5.6, height=3.25, color=RED_C, fill_opacity=0.18).shift(DOWN * 0.55)
-
+        territory_blob = Ellipse(
+            width=5.6, height=3.25, color=RED_C, fill_opacity=0.18).shift(DOWN * 0.55)
         choke = Dot(LEFT * 2.1 + DOWN * 0.55, color=WHITE, radius=0.09)
-
         blocker = Dot(LEFT * 3.4 + DOWN * 0.55, color=BLUE_D, radius=0.11)
-
         robber = Dot(RIGHT * 0.8 + DOWN * 0.25, color=RED, radius=0.11)
-
-        boundary_gate = Line(blocker.get_center(), choke.get_center(), color=ACCENT_Q, stroke_width=5)
-
+        boundary_gate = Line(blocker.get_center(
+        ), choke.get_center(), color=ACCENT_Q, stroke_width=5)
         blocked_x = Cross(choke, stroke_width=4, color=ACCENT_Q).scale(0.6)
+        territory_lbl = Text("R", color=RED_C, font_size=28).next_to(
+            territory_blob, UP, buff=0.12)
+        blocker_lbl = Text("Cop control", color=BLUE_D,
+                           font_size=18).next_to(blocker, DOWN, buff=0.12)
+        robber_lbl = Text("Robber", color=RED, font_size=18).next_to(
+            robber, UP, buff=0.12)
 
-        territory_lbl = Text("R", color=RED_C, font_size=28).next_to(territory_blob, UP, buff=0.12)
+        self.play(FadeIn(territory_blob, territory_lbl), run_time=1.5)
+        self.play(LaggedStart(FadeIn(blocker), Create(boundary_gate),
+                  FadeIn(choke), lag_ratio=0.25), run_time=2.0)
+        self.play(FadeIn(robber, robber_lbl, blocker_lbl),
+                  FadeIn(blocked_x), run_time=1.5)
+        self.wait(5.0)
 
-        blocker_lbl = Text("Cop control", color=BLUE_D, font_size=18).next_to(blocker, DOWN, buff=0.12)
-
-        robber_lbl = Text("Robber", color=RED, font_size=18).next_to(robber, UP, buff=0.12)
-
-
-
-        self.play(FadeIn(territory_blob, territory_lbl), run_time=0.7)
-
-        self.play(LaggedStart(FadeIn(blocker), Create(boundary_gate), FadeIn(choke), lag_ratio=0.25), run_time=1.0)
-
-        self.play(FadeIn(robber, robber_lbl, blocker_lbl), FadeIn(blocked_x), run_time=0.75)
-
-        self.wait(1.5)
-
-
-
-        self.play(FadeOut(territory_blob, territory_lbl, blocker, boundary_gate, choke, blocked_x, robber, robber_lbl, blocker_lbl), run_time=0.7)
+        self.play(FadeOut(territory_blob, territory_lbl, blocker, boundary_gate,
+                  choke, blocked_x, robber, robber_lbl, blocker_lbl), run_time=1.5)
 
 
-
-        # Roadmap card used between cases
-
+        # ==========================================
+        # SEGMENT 3: 26:50 ~ 42:13 (Duration: ~15.6s)
+        # "We do this using two main cases. In Case A..."
+        # ==========================================
         set_subtitle("Roadmap for the remaining cases")
-
         set_caption("We do this using two main cases.")
 
-        map_frame = RoundedRectangle(corner_radius=0.18, width=8.7, height=2.25, color=GRAY_B).shift(DOWN * 0.45)
-
-        case_a_box = RoundedRectangle(corner_radius=0.14, width=3.7, height=1.05, color=ACCENT_A).move_to(LEFT * 2.12 + DOWN * 0.45)
-
-        case_b_box = RoundedRectangle(corner_radius=0.14, width=3.7, height=1.05, color=ACCENT_B).move_to(RIGHT * 2.12 + DOWN * 0.45)
-
-        case_a_label = Text("Case A", font_size=30, color=ACCENT_A).move_to(case_a_box)
-
-        case_b_label = Text("Case B", font_size=30, color=ACCENT_B).move_to(case_b_box)
-
-        case_arrow = Arrow(case_a_box.get_right(), case_b_box.get_left(), buff=0.2, color=GRAY_C, stroke_width=4)
-
-
+        map_frame = RoundedRectangle(
+            corner_radius=0.18, width=8.7, height=2.25, color=GRAY_B).shift(DOWN * 0.45)
+        case_a_box = RoundedRectangle(
+            corner_radius=0.14, width=3.7, height=1.05, color=ACCENT_A).move_to(LEFT * 2.12 + DOWN * 0.45)
+        case_b_box = RoundedRectangle(
+            corner_radius=0.14, width=3.7, height=1.05, color=ACCENT_B).move_to(RIGHT * 2.12 + DOWN * 0.45)
+        case_a_label = Text("Case A", font_size=30,
+                            color=ACCENT_A).move_to(case_a_box)
+        case_b_label = Text("Case B", font_size=30,
+                            color=ACCENT_B).move_to(case_b_box)
+        case_arrow = Arrow(case_a_box.get_right(), case_b_box.get_left(
+        ), buff=0.2, color=GRAY_C, stroke_width=4)
 
         self.play(
-
             Create(map_frame),
-
-            LaggedStart(FadeIn(case_a_box), FadeIn(case_b_box), lag_ratio=0.22),
-
-            LaggedStart(Write(case_a_label), Write(case_b_label), lag_ratio=0.18),
-
+            LaggedStart(FadeIn(case_a_box), FadeIn(
+                case_b_box), lag_ratio=0.22),
+            LaggedStart(Write(case_a_label), Write(
+                case_b_label), lag_ratio=0.18),
             GrowArrow(case_arrow),
-
-            run_time=1.2,
-
-            rate_func=smooth,
-
+            run_time=1.5, rate_func=smooth,
         )
+        self.wait(0.5)
 
-        self.wait(0.9)
-
-
-
-        # Case A
-
+        # Highlight Case A
         self.play(
-
             case_a_box.animate.set_fill(ACCENT_A, opacity=0.2),
-
             case_b_box.animate.set_fill(opacity=0),
-
             Indicate(case_a_label, color=ACCENT_A, scale_factor=1.06),
-
-            run_time=0.6,
-
+            run_time=0.8,
         )
+        self.play(FadeOut(map_frame, case_a_box, case_b_box,
+                  case_a_label, case_b_label, case_arrow), run_time=0.7)
 
-        self.play(FadeOut(map_frame, case_a_box, case_b_box, case_a_label, case_b_label, case_arrow), run_time=0.65)
+        set_subtitle(
+            "Case A: one bottleneck toward the territory", color=ACCENT_A)
+        set_caption(
+            "In Case A, the robber's territory is guarded by a single bottleneck vertex, u.")
 
-
-
-        set_subtitle("Case A: one bottleneck toward the territory", color=ACCENT_A)
-
-        set_caption("In Case A, the robber's territory is guarded by a single bottleneck vertex, u.")
-
-
-
-        territory_a = Ellipse(width=5.0, height=3.3, color=ACCENT_B, fill_opacity=0.16).shift(DOWN * 0.35)
-
+        territory_a = Ellipse(
+            width=5.0, height=3.3, color=ACCENT_B, fill_opacity=0.16).shift(DOWN * 0.35)
         node_u = Dot(DOWN * 2.35, radius=0.11)
-
         node_v = Dot(DOWN * 0.8, radius=0.09)
-
         edge_uv = Line(node_u.get_center(), node_v.get_center(), color=GRAY_B)
-
         lbl_u = Text("u", font_size=22).next_to(node_u, DOWN, buff=0.1)
-
         lbl_v = Text("v", font_size=22).next_to(node_v, RIGHT, buff=0.1)
-
-        terr_lbl = Text("R", color=ACCENT_B, font_size=26).next_to(territory_a, UP, buff=0.1)
-
-
+        terr_lbl = Text("R", color=ACCENT_B, font_size=26).next_to(
+            territory_a, UP, buff=0.1)
 
         cops_a = VGroup(
-
-            Dot(node_u.get_center() + LEFT * 0.2 + UP * 0.08, color=BLUE_D, radius=0.075),
-
-            Dot(node_u.get_center() + RIGHT * 0.2 + UP * 0.08, color=BLUE_D, radius=0.075),
-
+            Dot(node_u.get_center() + LEFT * 0.2 +
+                UP * 0.08, color=BLUE_D, radius=0.075),
+            Dot(node_u.get_center() + RIGHT * 0.2 +
+                UP * 0.08, color=BLUE_D, radius=0.075),
             Dot(node_u.get_center() + DOWN * 0.17, color=BLUE_D, radius=0.075),
-
         )
-
-        cops_a_lbl = Text("3 cops hold u", color=BLUE_D, font_size=18).next_to(cops_a, LEFT, buff=0.14)
-
+        cops_a_lbl = Text("3 cops hold u", color=BLUE_D,
+                          font_size=18).next_to(cops_a, LEFT, buff=0.14)
         robber_a = Dot(UP * 0.45 + RIGHT * 0.7, color=RED, radius=0.1)
+        robber_a_lbl = Text("Robber", color=RED, font_size=18).next_to(
+            robber_a, UP, buff=0.1)
 
-        robber_a_lbl = Text("Robber", color=RED, font_size=18).next_to(robber_a, UP, buff=0.1)
+        self.play(FadeIn(territory_a, terr_lbl), Create(edge_uv),
+                  FadeIn(node_u, node_v, lbl_u, lbl_v),  run_time=1.2)
+        self.play(LaggedStart(FadeIn(cops_a), FadeIn(cops_a_lbl), FadeIn(
+            robber_a, robber_a_lbl), lag_ratio=0.2), run_time=1.2)
+        self.play(Indicate(node_u, color=ACCENT_A,
+                  scale_factor=1.15), run_time=0.8)
+        self.wait(1.0)
 
-
-
-        self.play(FadeIn(territory_a, terr_lbl), Create(edge_uv), FadeIn(node_u, node_v, lbl_u, lbl_v),  run_time=0.95)
-
-        self.play(LaggedStart(FadeIn(cops_a),FadeIn(cops_a_lbl), FadeIn(robber_a, robber_a_lbl), lag_ratio=0.2), run_time=0.9)
-
-        self.play(Indicate(node_u, color=ACCENT_A, scale_factor=1.15), run_time=0.55)
-
-        self.wait(0.6)
-
-
-
-        # Move all cops to a common rendezvous to represent the new base and consider G - u.
-
+        # "establish this as our new base"
         rendezvous = RIGHT * 0.6 + DOWN * 0.6
-
         self.play(
-
             cops_a[0].animate.move_to(rendezvous + LEFT * 0.12),
-
             cops_a[1].animate.move_to(rendezvous + RIGHT * 0.12),
-
             cops_a[2].animate.move_to(rendezvous + DOWN * 0.14),
-
-            cops_a_lbl.animate.next_to(VGroup(cops_a[0], cops_a[1], cops_a[2]), LEFT, buff=0.12),
-
-            run_time=0.9,
-
+            cops_a_lbl.animate.next_to(
+                VGroup(cops_a[0], cops_a[1], cops_a[2]), LEFT, buff=0.12),
+            run_time=1.5,
         )
+        self.wait(0.5)
 
-        self.wait(0.25)
+        # "shrinking the graph"
+        self.play(FadeOut(edge_uv, node_u, cops_a_lbl,
+                  lbl_u, node_v, lbl_v), run_time=0.8)
+        new_state_lbl = Text("New state: G - u", font_size=22,
+                             color=WHITE).to_edge(DOWN).shift(UP * 0.9)
+        base_lbl = Text("k = new base", font_size=18, color=BLUE_D).next_to(
+            rendezvous, DOWN, buff=0.18)
+        self.play(FadeIn(new_state_lbl), FadeIn(base_lbl), run_time=0.8)
+        self.wait(2.3)
 
+        self.play(FadeOut(territory_a, terr_lbl, cops_a,
+                  robber_a, robber_a_lbl, base_lbl), run_time=1.0)
+        self.play(FadeOut(new_state_lbl), run_time=0.5)
 
+        # ==========================================
+        # SEGMENT 4: 42:30 till 1:03:10 (Duration: ~20.8s)
+        # "But what if the territory is bounded by a cycle... Case B(i)..."
+        # ==========================================
+        case_switch_card("moving to Case B")  # 2.2s built-in
 
-        # Remove the bottleneck vertex `u` to indicate we've reduced the graph (G - u).
-
-        self.play(FadeOut(edge_uv, node_u,cops_a_lbl, lbl_u, node_v, lbl_v), run_time=0.55)
-
-        new_state_lbl = Text("New state: G - u", font_size=22, color=WHITE).to_edge(DOWN).shift(UP * 0.9)
-
-        base_lbl = Text("k = new base", font_size=18, color=BLUE_D).next_to(rendezvous, DOWN, buff=0.18)
-
-        self.play(FadeIn(new_state_lbl), FadeIn(base_lbl), run_time=0.6)
-
-        self.wait(0.9)
-
-
-
-        # Clear the Case A drawing completely before moving on.
-
+        self.play(Create(map_frame), FadeIn(case_a_box, case_b_box),
+                  Write(case_a_label), Write(case_b_label), run_time=1.0)
         self.play(
-
-            FadeOut(territory_a, terr_lbl, cops_a, robber_a, robber_a_lbl, base_lbl),
-
-            run_time=0.7,
-
-        )
-
-
-
-        # Keep the cops visible briefly to show continuity, then move on to the case map.
-
-        self.play(FadeOut(new_state_lbl), run_time=0.25)
-
-        case_switch_card("moving to Case B")
-   
-
-
-        # Re-show split briefly before Case B
-
-        self.play(Create(map_frame), FadeIn(case_a_box, case_b_box), Write(case_a_label), Write(case_b_label), run_time=0.85)
-
-        self.play(
-
             case_b_box.animate.set_fill(ACCENT_B, opacity=0.2),
-
             case_a_box.animate.set_fill(opacity=0),
-
             Indicate(case_b_label, color=ACCENT_B, scale_factor=1.06),
-
-            run_time=0.55,
-
+            run_time=1.0,
         )
+        self.play(FadeOut(map_frame, case_a_box, case_b_box,
+                  case_a_label, case_b_label), run_time=0.8)
 
-        self.play(FadeOut(map_frame, case_a_box, case_b_box, case_a_label, case_b_label), run_time=0.6)
-
-
-
-        # Case B(i)
-
-        set_subtitle("Case B(i): cycle with a disjoint robber component", color=ACCENT_B)
-
-        set_caption(" B(i): the robber's territory touches only one boundary path through a single bottleneck vertex.")
-
-
+        set_subtitle(
+            "Case B(i): cycle with a disjoint robber component", color=ACCENT_B)
+        set_caption(
+            " B(i): the robber's territory touches only one boundary path through a single bottleneck vertex.")
 
         pos_u = UP * 1.25
-
         pos_a = LEFT * 2.5 + DOWN * 0.15
-
         pos_b = RIGHT * 2.5 + DOWN * 0.15
-
         pos_p2 = DOWN * 2.0
 
-
-
         node_u = Dot(pos_u, radius=0.09)
-
         node_a = Dot(pos_a, radius=0.09)
-
         node_b = Dot(pos_b, radius=0.09)
-
         node_p2 = Dot(pos_p2, radius=0.09)
 
-
-
         lbl_u = Text("u", font_size=21).next_to(node_u, UP, buff=0.1)
-
         lbl_a = Text("a = x", font_size=21).next_to(node_a, LEFT, buff=0.1)
-
         lbl_b = Text("b", font_size=21).next_to(node_b, RIGHT, buff=0.1)
 
-
-
-        p1_group = VGroup(Line(pos_a, pos_u), Line(pos_u, pos_b)).set_color(ACCENT_B)
-
-        p2_group = VGroup(Line(pos_a, pos_p2), Line(pos_p2, pos_b)).set_color(ORANGE)
-
-        p1_lbl = Text("P1", color=ACCENT_B, font_size=19).next_to(p1_group[0], LEFT, buff=0.08)
-
-        p2_lbl = Text("P2", color=ORANGE, font_size=19).next_to(node_p2, DOWN, buff=0.1)
-
-
-
-        # Territory in Case B(i): a larger surrounding shape around the cycle (not full background).
+        p1_group = VGroup(Line(pos_a, pos_u), Line(
+            pos_u, pos_b)).set_color(ACCENT_B)
+        p2_group = VGroup(Line(pos_a, pos_p2), Line(
+            pos_p2, pos_b)).set_color(ORANGE)
+        p1_lbl = Text("P1", color=ACCENT_B, font_size=19).next_to(
+            p1_group[0], LEFT, buff=0.08)
+        p2_lbl = Text("P2", color=ORANGE, font_size=19).next_to(
+            node_p2, DOWN, buff=0.1)
 
         center = (pos_a + pos_u + pos_b + pos_p2) / 4
-
         surrounding_blob = Ellipse(
-
-            width=7.2,
-
-            height=4.2,
-
-            color=RED_C,
-
-            stroke_width=0,
-
-            fill_color=RED_C,
-
-            fill_opacity=0.14,
-
+            width=7.2, height=4.2, color=RED_C, stroke_width=0, fill_color=RED_C, fill_opacity=0.14,
         ).move_to(center)
 
-
-
         cycle_interior = Polygon(
-
-            pos_a,
-
-            pos_u,
-
-            pos_b,
-
-            pos_p2,
-
-            color=GRAY_D,
-
-            stroke_width=0,
-
-            fill_color=BLACK,
-
-            fill_opacity=0.55,
-
+            pos_a, pos_u, pos_b, pos_p2, color=GRAY_D, stroke_width=0, fill_color=BLACK, fill_opacity=0.55,
         )
 
-
-
-        # A single connector point near the outside of the territory blob that `x` connects to (cop C3 will move here).
-
-        ext_point = center + LEFT *2.20  + UP *0.9
-
+        ext_point = center + LEFT * 2.20 + UP * 0.9
         ext_dot = Dot(ext_point, color=RED_C, radius=0.08)
-
-        k_lbl = Text("k", color=RED_C, font_size=20).next_to(ext_dot, RIGHT, buff=0.08)
-
+        k_lbl = Text("k", color=RED_C, font_size=20).next_to(
+            ext_dot, RIGHT, buff=0.08)
         edge_a_r = Line(pos_a, ext_point, color=RED_C, stroke_width=3)
-
-        lbl_r = Text("R = outside region", color=RED_C, font_size=22).to_edge(LEFT).shift(UP * 1.75)
-
-
+        lbl_r = Text("R = outside region", color=RED_C,
+                     font_size=22).to_edge(LEFT).shift(UP * 1.75)
 
         c1 = Dot(pos_u, color=BLUE_D, radius=0.085)
-
         c2 = Dot(pos_p2, color=BLUE_D, radius=0.085)
-
         c3 = Dot(pos_a, color=BLUE_D, radius=0.105)
+        c3_lbl = Text("C3 guards x", color=BLUE_D,
+                      font_size=17).next_to(c3, DOWN, buff=0.08)
 
-        c3_lbl = Text("C3 guards x", color=BLUE_D, font_size=17).next_to(c3, DOWN, buff=0.08)
+        self.play(Create(p1_group), Create(p2_group), FadeIn(
+            node_u, node_a, node_b, node_p2), FadeIn(lbl_u, lbl_a, lbl_b), run_time=2.0)
+        self.play(FadeIn(surrounding_blob), FadeIn(
+            cycle_interior), run_time=1.0)
+        self.play(FadeIn(p1_lbl, p2_lbl), FadeIn(
+            lbl_r), Create(edge_a_r), run_time=1.0)
 
+        # "Cop 3 simply steps in to guard that connecting bottleneck..."
+        self.play(LaggedStart(FadeIn(c1), FadeIn(c2), FadeIn(
+            c3, c3_lbl), lag_ratio=0.25), run_time=1.5)
+        self.wait(1.5)
 
+        self.play(FadeIn(ext_dot, k_lbl), run_time=1.0)
+        self.play(FadeOut(c3_lbl), run_time=0.5)
+        self.play(c3.animate.move_to(ext_point), c3_lbl.animate.next_to(
+            ext_dot, DOWN, buff=0.08), run_time=1.5)
 
-        self.play(
+        # "this perfectly isolates the territory..."
+        self.play(cycle_interior.animate.set_fill(opacity=0.8),
+                  surrounding_blob.animate.set_fill(opacity=0.05), run_time=1.0)
 
-            Create(p1_group),
+        # "returning us directly to the logic of Case A"
+        free_label = Text("Two free cops -> Case A logic applies",
+                          color=BLUE_D, font_size=20).to_edge(DOWN).shift(UP * 0.8)
+        self.play(FadeIn(free_label), run_time=1.0)
+        self.wait(2.3)
 
-            Create(p2_group),
+        self.play(FadeOut(p1_group, p2_group, node_u, node_a, node_b, node_p2, lbl_u, lbl_a, lbl_b, p1_lbl, p2_lbl,
+                  surrounding_blob, cycle_interior, lbl_r, edge_a_r, ext_dot, k_lbl, c1, c2, c3, c3_lbl, free_label), run_time=1.0)
 
-            FadeIn(node_u, node_a, node_b, node_p2),
+        # ==========================================
+        # SEGMENT 5: 1:03:15 to 1:32:30 (Duration: ~29.25s)
+        # "However, if the territory touches both boundary paths, we have Case B(ii)..."
+        # ==========================================
+        # 2.2s built-in
+        case_switch_card("Case B(ii): R touches both boundaries")  # 2.2s built-in
 
-            FadeIn(lbl_u, lbl_a, lbl_b),
-
-            run_time=0.95,
-
-        )
-
-        self.play(FadeIn(surrounding_blob), FadeIn(cycle_interior), run_time=0.55)
-
-        self.play(FadeIn(p1_lbl, p2_lbl), FadeIn(lbl_r), Create(edge_a_r), run_time=0.75)
-
-        self.play(LaggedStart(FadeIn(c1), FadeIn(c2), FadeIn(c3, c3_lbl), lag_ratio=0.25), run_time=0.9)
-
-
-
-        # Show the external connector point and move C3 there to demonstrate a cop freeing itself.
-
-        self.play(FadeIn(ext_dot, k_lbl), run_time=0.45)
-
-        self.wait(0.35)
-
-        # animate C3 moving to the external connector point (becomes a free cop)
-
-        self.play(c3.animate.move_to(ext_point), c3_lbl.animate.next_to(ext_dot, DOWN, buff=0.08), run_time=1.0)
-
-        self.wait(0.25)
-
-
-
-        # Once C3 sits on the external connector, the interior and boundary become unreachable
-
-        # for the robber in the refined Case B(ii) sense — dim them to indicate sealing.
-
-        self.play(cycle_interior.animate.set_fill(opacity=0.8), surrounding_blob.animate.set_fill(opacity=0.05), run_time=0.6)
-
-
-
-        # Label that C3 is now free and can choose B(i) or B(ii).
-
-        free_label = Text("Free cop -> can switch to B(i) or B(ii)", color=BLUE_D, font_size=20).to_edge(DOWN).shift(UP * 0.8)
-
-        self.play(FadeIn(free_label), run_time=0.5)
-
-        self.wait(0.9)
-
-
-
-        self.play(FadeOut(p1_group, p2_group, node_u, node_a, node_b, node_p2, lbl_u, lbl_a, lbl_b, p1_lbl, p2_lbl, surrounding_blob, cycle_interior, lbl_r, edge_a_r, ext_dot, k_lbl, c1, c2, c3, c3_lbl, free_label), run_time=0.7)
-
-
-
-        case_switch_card("Back to Case B  ->  refine to Case B(ii)")
-
-
-
-        # Case B(ii)
-
-        set_subtitle("Case B(ii): path Q splits the cycle into two regions", color=ACCENT_B)
-
-        set_caption("Case B(ii): Here, we find a shortest path, Q, that cuts directly through the territory from one boundary to the other.")
-
-
+        set_subtitle(
+            "Case B(ii): path Q splits the cycle into two regions", color=ACCENT_B)
+        set_caption(
+            "Case B(ii):find a shortest path, Q, that cuts through the territory from one boundary to the other.")
 
         pos_top = UP * 1.8
-
         pos_bot = DOWN * 1.9
-
         pos_left = LEFT * 2.5 + DOWN * 0.05
-
         pos_right = RIGHT * 2.5 + DOWN * 0.05
 
-
-
         node_top = Dot(pos_top, radius=0.09)
-
         node_bot = Dot(pos_bot, radius=0.09)
-
         node_left = Dot(pos_left, radius=0.09)
-
         node_right = Dot(pos_right, radius=0.09)
 
-
-
         lbl_top = Text("u", font_size=21).next_to(node_top, UP, buff=0.1)
-
         lbl_bot = Text("b", font_size=21).next_to(node_bot, DOWN, buff=0.1)
-
         lbl_left = Text("x", font_size=21).next_to(node_left, LEFT, buff=0.1)
+        lbl_right = Text("y", font_size=21).next_to(
+            node_right, RIGHT, buff=0.1)
 
-        lbl_right = Text("y", font_size=21).next_to(node_right, RIGHT, buff=0.1)
-
-
-
-        p1_bii = VGroup(Line(pos_top, pos_left), Line(pos_left, pos_bot)).set_color(ACCENT_B)
-
-        p2_bii = VGroup(Line(pos_top, pos_right), Line(pos_right, pos_bot)).set_color(ORANGE)
-
+        p1_bii = VGroup(Line(pos_top, pos_left), Line(
+            pos_left, pos_bot)).set_color(ACCENT_B)
+        p2_bii = VGroup(Line(pos_top, pos_right), Line(
+            pos_right, pos_bot)).set_color(ORANGE)
         edge_q = Line(pos_left, pos_right, color=ACCENT_Q, stroke_width=6)
 
-
-
-        p1_lbl_bii = Text("P1", color=ACCENT_B, font_size=19).next_to(p1_bii[0], LEFT, buff=0.08)
-
-        p2_lbl_bii = Text("P2", color=ORANGE, font_size=19).next_to(p2_bii[0], RIGHT, buff=0.08)
-
-        q_lbl = Text("Q", color=ACCENT_Q, font_size=21).next_to(edge_q, UP, buff=0.08)
-
-
-
-        # Third cop C3 sits on Q (midpoint) to represent the barrier guard.
+        p1_lbl_bii = Text("P1", color=ACCENT_B, font_size=19).next_to(
+            p1_bii[0], LEFT, buff=0.08)
+        p2_lbl_bii = Text("P2", color=ORANGE, font_size=19).next_to(
+            p2_bii[0], RIGHT, buff=0.08)
+        q_lbl = Text("Q", color=ACCENT_Q, font_size=21).next_to(
+            edge_q, UP, buff=0.08)
 
         c3_bii = Dot((pos_left + pos_right) / 2, color=BLUE_D, radius=0.105)
+        c3_bii_lbl = Text("C3", color=BLUE_D, font_size=17).next_to(
+            c3_bii, DOWN, buff=0.08)
 
-        c3_bii_lbl = Text("C3", color=BLUE_D, font_size=17).next_to(c3_bii, DOWN, buff=0.08)
-
-
-
-        top_half = Polygon(pos_top, pos_left, pos_right, color=PURPLE, fill_color=PURPLE, fill_opacity=0.23, stroke_width=2)
-
-        bot_half = Polygon(pos_bot, pos_left, pos_right, color=TEAL, fill_color=TEAL, fill_opacity=0.23, stroke_width=2)
-
-
-
-        # Place one cop exactly at `u` and one exactly at `b`.
+        top_half = Polygon(pos_top, pos_left, pos_right, color=PURPLE,
+                           fill_color=PURPLE, fill_opacity=0.23, stroke_width=2)
+        bot_half = Polygon(pos_bot, pos_left, pos_right, color=TEAL,
+                           fill_color=TEAL, fill_opacity=0.23, stroke_width=2)
 
         cop_u = Dot(pos_top, color=BLUE_D, radius=0.105)
-
-        cop_u_lbl = Text("C1", color=BLUE_D, font_size=17).next_to(cop_u, DOWN, buff=0.08)
-
+        cop_u_lbl = Text("C1", color=BLUE_D, font_size=17).next_to(
+            cop_u, DOWN, buff=0.08)
         cop_b = Dot(pos_bot, color=BLUE_D, radius=0.105)
-
-        cop_b_lbl = Text("C2(Free)", color=BLUE_D, font_size=17).next_to(cop_b, UP, buff=0.2)
-
+        cop_b_lbl = Text("C2(Free)", color=BLUE_D,
+                         font_size=17).next_to(cop_b, UP, buff=0.2)
         robber_bii = Dot(UP * 0.75 + LEFT * 0.4, color=RED, radius=0.095)
+        robber_bii_lbl = Text("Robber in R", color=RED, font_size=18).next_to(
+            robber_bii, UP, buff=0.08)
 
-        robber_bii_lbl = Text("Robber in R", color=RED, font_size=18).next_to(robber_bii, UP, buff=0.08)
+        self.play(Create(p1_bii), Create(p2_bii), FadeIn(node_top, node_bot, node_left,
+                  node_right), FadeIn(lbl_top, lbl_bot, lbl_left, lbl_right), run_time=2.0)
+        self.play(FadeIn(p1_lbl_bii, p2_lbl_bii), Create(
+            edge_q), FadeIn(q_lbl), run_time=2.0)
+        self.wait(3.5)  # "...shortest path Q that cuts directly through..."
 
-
-
+        # "Our third cop steps in to guard path Q."
         self.play(
-
-            Create(p1_bii),
-
-            Create(p2_bii),
-
-            FadeIn(node_top, node_bot, node_left, node_right),
-
-            FadeIn(lbl_top, lbl_bot, lbl_left, lbl_right),
-
-            run_time=0.95,
-
-        )
-
-        self.play(FadeIn(p1_lbl_bii, p2_lbl_bii), Create(edge_q), FadeIn(q_lbl), run_time=0.75)
-
-        self.play(
-
             FadeIn(top_half, bot_half),
-
-            LaggedStart(FadeIn(cop_u, cop_u_lbl), FadeIn(cop_b, cop_b_lbl), FadeIn(c3_bii, c3_bii_lbl), FadeIn(robber_bii, robber_bii_lbl), lag_ratio=0.22),
-
-            run_time=0.9,
-
+            LaggedStart( FadeIn(cop_b,cop_b_lbl),FadeIn(cop_u,cop_u_lbl),FadeIn(c3_bii, c3_bii_lbl), FadeIn(robber_bii, robber_bii_lbl), lag_ratio=0.22),
+            run_time=2.5,
         )
+        self.play(Indicate(edge_q, color=ACCENT_Q,
+                  scale_factor=1.02), run_time=1.5)
 
-        self.play(Indicate(edge_q, color=ACCENT_Q, scale_factor=1.02), run_time=0.5)
+        # "The robber is forced into one side..."
+        unreachable_lbl = Text("unreachable", color=RED, font_size=18).move_to(
+            bot_half.get_center() + UP * 0.12)
+        self.play(bot_half.animate.set_fill(color=GRAY_D, opacity=0.06),
+                  FadeIn(unreachable_lbl), run_time=1.5)
+        self.wait(4.0)
 
-
-
-        # After Q splits the cycle, one side becomes unreachable for the robber.
-
-        unreachable_lbl = Text("unreachable", color=RED, font_size=18).move_to(bot_half.get_center() + UP * 0.12)
-
-        self.play(bot_half.animate.set_fill(color=GRAY_D, opacity=0.06), FadeIn(unreachable_lbl), run_time=0.6)
-
-
-
-        # Show two cops placed exactly at `u` and `b`; mark the one at `b` as free.
-
-        free_choice = Text("Free cop at b —> can choose B(i) or B(ii)", color=BLUE_D, font_size=20).to_edge(DOWN).shift(UP * 0.9)
-
-        self.play(FadeIn(cop_u, cop_u_lbl), FadeIn(cop_b, cop_b_lbl), FadeIn(free_choice), run_time=0.7)
-
-        self.wait(1.0)
-
-
-
-        # Clean up visuals for the conclusion.
+        # "instantly freeing up one of our cops! And we proceed to case B, again."
+        free_choice = Text("Free cop at b —> can choose B(i) or B(ii)",
+                           color=BLUE_D, font_size=20).to_edge(DOWN).shift(UP * 0.9)
+        self.play( FadeIn(free_choice), run_time=1.5)
+        self.wait(6.05)
 
         self.play(
-
             FadeOut(
-
-                p1_bii,
-
-                p2_bii,
-
-                edge_q,
-
-                p1_lbl_bii,
-
-                p2_lbl_bii,
-
-                q_lbl,
-
-                node_top,
-
-                node_bot,
-
-                node_left,
-
-                node_right,
-
-                lbl_top,
-
-                lbl_bot,
-
-                lbl_left,
-
-                lbl_right,
-
-                top_half,
-
-                bot_half,
-
-                cop_u,
-
-                cop_u_lbl,
-
-                cop_b,
-
-                cop_b_lbl,
-
-                c3_bii,
-
-                c3_bii_lbl,
-
-                robber_bii,
-
-                robber_bii_lbl,
-
-                unreachable_lbl,
-
-                
-
-                free_choice,
-
+                p1_bii, p2_bii, edge_q, p1_lbl_bii, p2_lbl_bii, q_lbl,
+                node_top, node_bot, node_left, node_right, lbl_top, lbl_bot, lbl_left, lbl_right,
+                top_half, bot_half, cop_u, cop_u_lbl, cop_b, cop_b_lbl, c3_bii, c3_bii_lbl,
+                robber_bii, robber_bii_lbl, unreachable_lbl, free_choice,
             ),
-
-            run_time=0.85,
-
+            run_time=1.5,
         )
 
+        # 1-second gap as requested
+        self.wait(0.6)
 
-
-        # Show the caption as the conclusion label while the ending message appears.
-
-        self.play(FadeOut(caption_bar, caption), run_time=0.5)
-
+        # ==========================================
+        # SEGMENT 6: 1:33 till 1:48 (Duration: ~15.0s)
+        # "In every possible scenario, we successfully shrink the robber's territory..."
+        # ==========================================
+        self.play(FadeOut(caption_bar, caption), run_time=1.0)
         set_subtitle("Conclusion of Part 5", color=ACCENT_B)
-
-
-
-        # Part 5 conclusion, centered on its own.
+        self.wait(1.0)
 
         part5_conclusion = Text(
-
             "By repeatedly shrinking the robber's territory while keeping a cop free,\n three cops will always guarantee capture.",
-            font="Georgia",
-
-            font_size=26,
-
-            color=WHITE,
-
-            line_spacing=0.9,
-
+            font="Georgia", font_size=26, color=WHITE, line_spacing=0.9,
         ).move_to(ORIGIN)
 
-        self.play(FadeIn(part5_conclusion), run_time=0.7)
+        self.play(FadeIn(part5_conclusion), run_time=1.5)
+        self.wait(6.0)
 
-        self.wait(1.2)
-
-        self.play(FadeOut(part5_conclusion, subtitle, caption_bar, caption, title_rule, title), run_time=0.5)
-
-
-
-        # Final thank-you card, centered with no other text or box.
+        self.play(FadeOut(part5_conclusion, subtitle,
+                  title_rule, title), run_time=1.5)
 
         final_conclusion = Text(
-
             "Thank you for watching!",
-
-            font="Georgia",
-
-            font_size=28,
-
-            color=WHITE,
-
-            line_spacing=0.9,
-
+            font="Georgia", font_size=28, color=WHITE, line_spacing=0.9,
         ).move_to(ORIGIN)
 
-        self.play(FadeIn(final_conclusion), run_time=0.6)
-
-        self.wait(1.0)
-
-        self.play(FadeOut(final_conclusion), run_time=0.85)
-
+        self.play(FadeIn(final_conclusion), run_time=1.5)
+        self.wait(2.5)
+        self.play(FadeOut(final_conclusion), run_time=1.5)
