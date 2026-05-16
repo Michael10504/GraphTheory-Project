@@ -9,10 +9,21 @@ __pycache__/
 env/
 .env
 
-# Your new directories to exclude
+# Project-local Python cache
 /__pycache__/
+
+# Manim-generated outputs and caches
 /media/videos/
 /media/images/
 /media/Tex/
 /media/texts/
+/media/**/partial_movie_files/
+
+# Generated binary/text artifacts
+*.mp4
+*.svg
+
+# Local config and IDE files
 manim.cfg
+.idea/
+.vscode/
