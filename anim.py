@@ -202,18 +202,141 @@ class CopsAndRobbers(Scene):
         self.wait(2)
 
     def part3_pitfalls(self):
+        self.add_sound("media/audio/Mohamed_Part3.wav")
         title = Text("Part 3: The Secret of 'Pitfalls'").to_edge(UP)
-        self.play(Write(title))
+        self.play(Write(title))  # Finishes at t=1s
 
-        # Pitfall definition
-        # u connected to v and w. v connected to u, w, z
+        # --- RECONSTRUCTING ATTACHED GRAPH 1 (Triangular structure) ---
+        outer_top = np.array([0, 2, 0])
+        outer_left = np.array([-2, -1.5, 0])
+        outer_right = np.array([2, -1.5, 0])
+
+        inner_base = np.array([0, -0.2, 0])
+        inner_left = np.array([-0.6, 0.8, 0])
+        inner_right = np.array([0.6, 0.8, 0])
+
+        attached1_verts = [1, 2, 3, 4, 5, 6]
+        attached1_layout = {
+            1: outer_top, 2: outer_left, 3: outer_right,
+            4: inner_base, 5: inner_left, 6: inner_right
+        }
+        attached1_edges = [
+            (1, 2), (2, 3), (3, 1),
+            (4, 5), (5, 6), (6, 4),
+            (1, 6), (1, 5),
+            (2, 5), (2, 4),
+            (3, 4), (3, 6)
+        ]
+
+        # CHANGED: Increased scale from 0.4 to 0.75 and adjusted vertex radius for better look
+        attached1_g = Graph(attached1_verts, attached1_edges, layout=attached1_layout,
+                            labels=True, vertex_config={'radius': 0.15}).scale(0.75)
+
+        # --- RECONSTRUCTING HEX GRID (Prism Projection) ---
+        row0 = [np.array([-1, 1.73, 0]), np.array([1, 1.73, 0])]
+        row1 = [np.array([-2, 0, 0]), np.array([0, 0, 0]), np.array([2, 0, 0])]
+        row2 = [np.array([-1, -1.73, 0]), np.array([1, -1.73, 0])]
+
+        hex_positions = row0 + row1 + row2
+        hex_verts = list(range(1, 8))
+        hex_layout = {i: pos for i, pos in zip(hex_verts, hex_positions)}
+
+        hex_edges = [
+            (1, 2), (1, 3), (1, 4),
+            (2, 4), (2, 5),
+            (3, 4), (3, 6),
+            (4, 5), (4, 6), (4, 7),
+            (5, 7),
+            (6, 7)
+        ]
+
+        circled_nodes = [1, 2, 3, 5, 6, 7]
+
+        # CHANGED: Increased scale from 0.4 to 0.75
+        hex_g = Graph(hex_verts, hex_edges, layout=hex_layout,
+                      labels=True, vertex_config={'radius': 0.15}).scale(0.75)
+
+        circles = VGroup(*[
+            Circle(radius=0.2, color=WHITE).move_to(hex_g.vertices[node].get_center())
+            for node in circled_nodes
+        ])
+        hex_group = Group(hex_g, circles)
+
+        # --- WHEEL GRAPH W_6 (Comparison) ---
+        w6_verts_compare = [0, 1, 2, 3, 4, 5]
+        w6_edges_compare = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5),
+                            (1, 2), (2, 3), (3, 4), (4, 5), (5, 1)]
+        w6_layout_compare = {0: ORIGIN, 1: UP, 2: RIGHT + UP * 0.5, 3: RIGHT + DOWN * 0.5, 4: DOWN, 5: LEFT}
+
+        # CHANGED: Increased scale from 0.4 to 0.75
+        w6_compare = Graph(w6_verts_compare, w6_edges_compare, layout=w6_layout_compare,
+                           labels=True, vertex_config={'radius': 0.15}).scale(0.75)
+
+        # CHANGED: Labels removed completely. Using move_to(DOWN*0.5) to keep the layout central and balanced.
+        comparison_display = Group(attached1_g, hex_group, w6_compare).arrange(RIGHT, buff=0.9).move_to(DOWN * 0.5)
+
+        self.play(FadeIn(comparison_display))  # Finishes at t=2s
+
+        # DELAY 1: Wait until 7 seconds for the first three graphs to disappear
+        self.wait(5)  # reaches t=7s
+        self.play(FadeOut(comparison_display))  # Finishes at t=8s
+
+        self.clear()
+        self.play(Write(title))  # Finishes at t=9s
+
+        # DELAY 2: Wait until 13 seconds for u and v to appear
+        self.wait(4)  # reaches t=13s
+
+        # Pitfall u definition
         verts = ["u", "v", "w", "z"]
         edges = [("u", "v"), ("u", "w"), ("v", "w"), ("v", "z")]
-        layout = {"u": LEFT, "w": DOWN, "v": RIGHT, "z": RIGHT*2 + UP}
+        layout = {"u": LEFT, "w": DOWN, "v": RIGHT, "z": RIGHT * 2 + UP}
         g = Graph(verts, edges, layout=layout, labels=True).scale(1.5)
 
-        self.play(Create(g))
-        self.wait(1)
+        uv_nodes = VGroup(g.vertices["u"], g.vertices["v"])
+        # CHANGED: Isolate the specific edge between u and v
+        uv_edge = g.edges[("u", "v")]
+
+        other_verts = VGroup(g.vertices["w"], g.vertices["z"])
+        # CHANGED: Gather only the remaining edges that do not connect u and v directly
+        remaining_edges = VGroup(*[edge for key, edge in g.edges.items() if key != ("u", "v")])
+        rest_of_graph = VGroup(other_verts, remaining_edges)
+
+        # CHANGED: uv_edge now animates alongside uv_nodes at t=13s
+        self.play(FadeIn(uv_nodes), FadeIn(uv_edge))  # Finishes at t=14s
+
+        # --- NEW TIMED CHASE SEQUENCE (Fills the 9-second gap completely) ---
+        # 1. Spawn tokens on their respective vertices
+        cop = Dot(color=BLUE).scale(1.5).move_to(g.vertices["v"].get_center())
+        robber = Dot(color=RED).scale(1.5).move_to(g.vertices["u"].get_center())
+
+        self.play(FadeIn(cop), FadeIn(robber), run_time=1)  # Finishes at t=15s
+        self.wait(1)  # reaches t=16s
+
+        # 2. Cop moves to vertex u and catches the robber
+        self.play(
+            cop.animate.move_to(g.vertices["u"].get_center()),
+            FadeOut(robber),
+            run_time=1.5
+        )  # Finishes at t=17.5s
+
+        self.wait(1)  # reaches t=18.5s
+
+        # 3. Reset positions back to vertices u and v
+        self.play(
+            cop.animate.move_to(g.vertices["v"].get_center()),
+            FadeIn(robber),
+            run_time=1.5
+        )  # Finishes at t=20s
+
+        # 4. Remaining padding to hit the 23-second mark precisely
+        self.wait(3)  # reaches t=23s
+
+        # DELAY 3: Wait until 23 seconds for the rest of the graph to appear
+        self.play(FadeIn(rest_of_graph))  # Finishes at t=24s
+
+        # DELAY 4: Wait until 32 seconds for the pitfall highlight to appear
+        self.wait(8)  # reaches t=32s
 
         # Highlight pitfall and attack vertex
         pitfall_circ = Circle(color=RED, radius=1).move_to(g.vertices["u"])
@@ -223,12 +346,17 @@ class CopsAndRobbers(Scene):
             0.5).next_to(g.vertices["u"], UP, buff=0.75)
         attack_text = Text("Attack v", color=BLUE).scale(
             0.5).next_to(g.vertices["v"], UP, buff=0.75)
-        n_text = Text("N[u] is in N[v]", font_size=36).to_edge(DOWN)
+        n_text = Text("N[u] ⊆ N[v]", font_size=36).to_edge(DOWN)
 
-        self.play(Create(pitfall_circ), Write(pitfall_text))
-        self.play(Create(attack_circ), Write(attack_text))
-        self.play(Write(n_text))
-        self.wait(3)
+        self.play(Create(pitfall_circ), Write(pitfall_text))  # Finishes at t=33s
+
+        # DELAY 5: Wait until 39 seconds for the attack highlight to appear
+        self.wait(4)  # reaches t=39s
+        self.play(Create(attack_circ), Write(attack_text))  # Finishes at t=40s
+        self.play(Write(n_text))  # Finishes at t=41s
+
+        # DELAY 6: Wait 1 second after the highlights complete
+        self.wait(1)  # reaches t=42s
 
         self.clear()
         self.play(Write(title))
