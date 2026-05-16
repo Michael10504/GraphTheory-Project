@@ -728,7 +728,7 @@ class CopsAndRobbers(Scene):
         # ==========================================
         set_subtitle("Robber Territory: reachable zone", color=RED_C)
         set_caption(
-            "Robber Territory: the set of all vertices the robber can  reach without running into cops or crossing guarded paths.")
+            "the set of all vertices the robber can  reach without running into cops or crossing guarded paths.")
 
         self.play(FadeOut(loop, inside_fill, interior_lbl,
                   exterior_lbl, tracer), run_time=1.0)
@@ -757,9 +757,6 @@ class CopsAndRobbers(Scene):
 
         self.play(FadeOut(territory_blob, territory_lbl, blocker, boundary_gate,
                   choke, blocked_x, robber, robber_lbl, blocker_lbl), run_time=1.5)
-
-        # 1-second gap as requested
-        self.wait(1.0)
 
         # ==========================================
         # SEGMENT 3: 26:50 ~ 42:13 (Duration: ~15.6s)
@@ -945,6 +942,7 @@ class CopsAndRobbers(Scene):
         self.wait(1.5)
 
         self.play(FadeIn(ext_dot, k_lbl), run_time=1.0)
+        self.play(FadeOut(c3_lbl), run_time=0.5)
         self.play(c3.animate.move_to(ext_point), c3_lbl.animate.next_to(
             ext_dot, DOWN, buff=0.08), run_time=1.5)
 
@@ -953,7 +951,7 @@ class CopsAndRobbers(Scene):
                   surrounding_blob.animate.set_fill(opacity=0.05), run_time=1.0)
 
         # "returning us directly to the logic of Case A"
-        free_label = Text("Free cop -> can switch to B(i) or B(ii)",
+        free_label = Text("Two free cops -> Case A logic applies",
                           color=BLUE_D, font_size=20).to_edge(DOWN).shift(UP * 0.8)
         self.play(FadeIn(free_label), run_time=1.0)
         self.wait(2.3)
@@ -966,12 +964,13 @@ class CopsAndRobbers(Scene):
         # "However, if the territory touches both boundary paths, we have Case B(ii)..."
         # ==========================================
         # 2.2s built-in
-        case_switch_card("Back to Case B  ->  refine to Case B(ii)")
+        # 2.2s built-in
+        case_switch_card("Case B(ii): R touches both boundaries")
 
         set_subtitle(
             "Case B(ii): path Q splits the cycle into two regions", color=ACCENT_B)
         set_caption(
-            "Case B(ii): Here, we find a shortest path, Q, that cuts directly through the territory from one boundary to the other.")
+            "Case B(ii):find a shortest path, Q, that cuts through the territory from one boundary to the other.")
 
         pos_top = UP * 1.8
         pos_bot = DOWN * 1.9
@@ -1030,7 +1029,7 @@ class CopsAndRobbers(Scene):
         # "Our third cop steps in to guard path Q."
         self.play(
             FadeIn(top_half, bot_half),
-            LaggedStart(FadeIn(cop_u, cop_u_lbl), FadeIn(cop_b, cop_b_lbl), FadeIn(
+            LaggedStart(FadeIn(cop_b, cop_b_lbl), FadeIn(cop_u, cop_u_lbl), FadeIn(
                 c3_bii, c3_bii_lbl), FadeIn(robber_bii, robber_bii_lbl), lag_ratio=0.22),
             run_time=2.5,
         )
@@ -1047,8 +1046,7 @@ class CopsAndRobbers(Scene):
         # "instantly freeing up one of our cops! And we proceed to case B, again."
         free_choice = Text("Free cop at b —> can choose B(i) or B(ii)",
                            color=BLUE_D, font_size=20).to_edge(DOWN).shift(UP * 0.9)
-        self.play(FadeIn(cop_u, cop_u_lbl), FadeIn(
-            cop_b, cop_b_lbl), FadeIn(free_choice), run_time=1.5)
+        self.play(FadeIn(free_choice), run_time=1.5)
         self.wait(6.05)
 
         self.play(
@@ -1062,7 +1060,7 @@ class CopsAndRobbers(Scene):
         )
 
         # 1-second gap as requested
-        self.wait(1.0)
+        self.wait(0.6)
 
         # ==========================================
         # SEGMENT 6: 1:33 till 1:48 (Duration: ~15.0s)
@@ -1078,16 +1076,30 @@ class CopsAndRobbers(Scene):
         ).move_to(ORIGIN)
 
         self.play(FadeIn(part5_conclusion), run_time=1.5)
-        self.wait(4.0)
+        self.wait(6.0)
 
         self.play(FadeOut(part5_conclusion, subtitle,
                   title_rule, title), run_time=1.5)
 
         final_conclusion = Text(
             "Thank you for watching!",
-            font="Georgia", font_size=28, color=WHITE, line_spacing=0.9,
-        ).move_to(ORIGIN)
+            font="Georgia", font_size=36, color=WHITE,
+        )
 
-        self.play(FadeIn(final_conclusion), run_time=1.5)
-        self.wait(2.5)
-        self.play(FadeOut(final_conclusion), run_time=1.5)
+        music_credits = Text(
+            "Music Credits: 3blue1brown channel",
+            font="Georgia", font_size=20, color=GRAY_B,
+        )
+
+        ai_disclosure = Text(
+            "Disclosure: AI tools were utilized to assist in the creation of this video.",
+            font="Georgia", font_size=20, color=GRAY_B,
+        )
+
+        # Group them together and arrange them vertically
+        outro_group = VGroup(final_conclusion, music_credits, ai_disclosure).arrange(
+            DOWN, buff=0.6).move_to(ORIGIN)
+
+        self.play(FadeIn(outro_group), run_time=1.5)
+        self.wait(4.0)  # Wait a bit longer so viewers can read the disclosure
+        self.play(FadeOut(outro_group), run_time=1.5)
