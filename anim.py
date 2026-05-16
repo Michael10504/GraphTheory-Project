@@ -682,14 +682,6 @@ class CopsAndRobbers(Scene):
 
         self.add(subtitle, caption_bar, caption)
 
-        # Temporarily override self.play so every play is followed by a 1s wait
-        orig_play = self.play
-        def _play_and_wait(*a, **kw):
-            orig_play(*a, **kw)
-            # Use orig_play with a Wait object to avoid calling self.wait (which uses self.play)
-            orig_play(Wait(run_time=1))
-        self.play = _play_and_wait
-
 
 
         def set_subtitle(text, color=ACCENT_Q):
@@ -697,7 +689,6 @@ class CopsAndRobbers(Scene):
             new_subtitle = Text(text, font_size=26, color=color).next_to(title_rule, DOWN, buff=0.18)
 
             self.play(Transform(subtitle, new_subtitle), run_time=0.55, rate_func=smooth)
-            self.wait(1)
 
 
 
@@ -706,7 +697,6 @@ class CopsAndRobbers(Scene):
             new_caption = Text(text, font_size=20, color=WHITE).move_to(caption_bar)
 
             self.play(Transform(caption, new_caption), run_time=0.45, rate_func=smooth)
-            self.wait(1)
 
 
 
@@ -1438,6 +1428,4 @@ class CopsAndRobbers(Scene):
         self.wait(1.0)
 
         self.play(FadeOut(final_conclusion), run_time=0.85)
-        # Restore original play method in case other parts rely on it
-        self.play = orig_play
 
