@@ -1103,6 +1103,3 @@ class CopsAndRobbers(Scene):
         self.play(FadeIn(outro_group), run_time=1.5)
         self.wait(4.0)  # Wait a bit longer so viewers can read the disclosure
         self.play(FadeOut(outro_group), run_time=1.5)
-
-
-ٍ
