@@ -120,7 +120,7 @@ class CopsAndRobbers(Scene):
         self.wait(15)
 
     def part2_geometry(self):
-        self.add_sound("media/audio/Part2_bassel.wav", time_offset=0)   
+        self.add_sound("media/audio/Part2_bassel.wav", time_offset=0)
 
         title = Text("Part 2: The Geometry of the Getaway").to_edge(UP)
         self.play(Write(title))  # ~1s → t=1
@@ -133,41 +133,46 @@ class CopsAndRobbers(Scene):
         k4_label = Text("Complete Graph (Cop Wins)").scale(
             0.4).next_to(k4, UP, buff=0.4)
 
-        cop_k4 = Dot(color=BLUE).scale(1.5).move_to(k4.vertices[1].get_center())
-        robber_k4 = Dot(color=RED).scale(1.5).move_to(k4.vertices[3].get_center())
+        cop_k4 = Dot(color=BLUE).scale(1.5).move_to(
+            k4.vertices[1].get_center())
+        robber_k4 = Dot(color=RED).scale(
+            1.5).move_to(k4.vertices[3].get_center())
 
         self.play(Create(k4), Write(k4_label))         # ~1s → t=2
         self.play(FadeIn(cop_k4), FadeIn(robber_k4))   # ~1s → t=3
-        self.wait(4)                                    #        t=7
+        self.wait(4)  # t=7
         self.play(cop_k4.animate.move_to(
-            k4.vertices[3].get_center()), run_time=1)   #        t=8
-        self.play(FadeOut(robber_k4), run_time=0.5)     #        t=8.5
-        self.wait(4.5)                                  #        t=13 ✓
+            k4.vertices[3].get_center()), run_time=1)  # t=8
+        self.play(FadeOut(robber_k4), run_time=0.5)  # t=8.5
+        self.wait(4.5)  # t=13 ✓
 
         # ── TREES (13–33s) ────────────────────────────────────────────────────
         tree_verts = [1, 2, 3, 4, 5, 6]
         tree_edges = [(1, 2), (2, 3), (2, 4), (1, 5), (5, 6)]
         tree = Graph(tree_verts, tree_edges, layout="tree",
-                    root_vertex=1).scale(0.7).shift(DOWN * 1.2)
+                     root_vertex=1).scale(0.7).shift(DOWN * 1.2)
         tree_label = Text("Tree (Cop Wins)").scale(
             0.4).next_to(tree, UP, buff=0.4)
 
-        cop_t = Dot(color=BLUE).scale(1.5).move_to(tree.vertices[1].get_center())
-        robber_t = Dot(color=RED).scale(1.5).move_to(tree.vertices[3].get_center())
+        cop_t = Dot(color=BLUE).scale(1.5).move_to(
+            tree.vertices[1].get_center())
+        robber_t = Dot(color=RED).scale(1.5).move_to(
+            tree.vertices[3].get_center())
 
         self.play(Create(tree), Write(tree_label))      # ~1s → t=14
         self.play(FadeIn(cop_t), FadeIn(robber_t))      # ~1s → t=15
-        self.wait(3)                                    #        t=18
+        self.wait(3)  # t=18
         self.play(cop_t.animate.move_to(
-            tree.vertices[2].get_center()), run_time=1) #        t=19
-        self.wait(2)                                    #        t=21
+            tree.vertices[2].get_center()), run_time=1)  # t=19
+        self.wait(2)  # t=21
         self.play(robber_t.animate.move_to(
-            tree.vertices[3].get_center()), run_time=1) #        t=22  (stuck at leaf)
-        self.wait(3)                                    #        t=25
+            # t=22  (stuck at leaf)
+            tree.vertices[3].get_center()), run_time=1)
+        self.wait(3)  # t=25
         self.play(cop_t.animate.move_to(
-            tree.vertices[3].get_center()), run_time=1) #        t=26
-        self.play(FadeOut(robber_t), run_time=0.5)      #        t=26.5
-        self.wait(6.5)                                  #        t=33 ✓
+            tree.vertices[3].get_center()), run_time=1)  # t=26
+        self.play(FadeOut(robber_t), run_time=0.5)  # t=26.5
+        self.wait(6.5)  # t=33 ✓
 
         # ── CYCLES (33s → end) ────────────────────────────────────────────────
         c4_verts = [1, 2, 3, 4]
@@ -177,12 +182,14 @@ class CopsAndRobbers(Scene):
         c4_label = Text("Cycle (Robber Wins)").scale(
             0.4).next_to(c4, UP, buff=0.4)
 
-        cop_c4 = Dot(color=BLUE).scale(1.5).move_to(c4.vertices[1].get_center())
-        robber_c4 = Dot(color=RED).scale(1.5).move_to(c4.vertices[3].get_center())
+        cop_c4 = Dot(color=BLUE).scale(1.5).move_to(
+            c4.vertices[1].get_center())
+        robber_c4 = Dot(color=RED).scale(
+            1.5).move_to(c4.vertices[3].get_center())
 
         self.play(Create(c4), Write(c4_label))          # ~1s → t=34
         self.play(FadeIn(cop_c4), FadeIn(robber_c4))    # ~1s → t=35
-        self.wait(2)                                    #        t=37
+        self.wait(2)  # t=37
 
         # Chase loop — each full loop is 4 × 0.6s = 2.4s; 3 loops = 7.2s → t≈44
         for _ in range(3):
@@ -209,7 +216,8 @@ class CopsAndRobbers(Scene):
         self.wait(9.8)
 
     def part3_pitfalls(self):
-        self.add_sound("media/audio/Mohamed_Part3.wav")
+        self.add_sound("media/audio/Mohamed_Part3.wav", time_offset=0)
+        self.add_sound("media/audio/Michael_Part1.wav", time_offset=42)
         title = Text("Part 3: The Secret of 'Pitfalls'").to_edge(UP)
         self.play(Write(title))  # Finishes at t=1s
 
@@ -264,7 +272,8 @@ class CopsAndRobbers(Scene):
                       labels=True, vertex_config={'radius': 0.15}).scale(0.75)
 
         circles = VGroup(*[
-            Circle(radius=0.2, color=WHITE).move_to(hex_g.vertices[node].get_center())
+            Circle(radius=0.2, color=WHITE).move_to(
+                hex_g.vertices[node].get_center())
             for node in circled_nodes
         ])
         hex_group = Group(hex_g, circles)
@@ -273,14 +282,16 @@ class CopsAndRobbers(Scene):
         w6_verts_compare = [0, 1, 2, 3, 4, 5]
         w6_edges_compare = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5),
                             (1, 2), (2, 3), (3, 4), (4, 5), (5, 1)]
-        w6_layout_compare = {0: ORIGIN, 1: UP, 2: RIGHT + UP * 0.5, 3: RIGHT + DOWN * 0.5, 4: DOWN, 5: LEFT}
+        w6_layout_compare = {0: ORIGIN, 1: UP, 2: RIGHT +
+                             UP * 0.5, 3: RIGHT + DOWN * 0.5, 4: DOWN, 5: LEFT}
 
         # CHANGED: Increased scale from 0.4 to 0.75
         w6_compare = Graph(w6_verts_compare, w6_edges_compare, layout=w6_layout_compare,
                            labels=True, vertex_config={'radius': 0.15}).scale(0.75)
 
         # CHANGED: Labels removed completely. Using move_to(DOWN*0.5) to keep the layout central and balanced.
-        comparison_display = Group(attached1_g, hex_group, w6_compare).arrange(RIGHT, buff=0.9).move_to(DOWN * 0.5)
+        comparison_display = Group(attached1_g, hex_group, w6_compare).arrange(
+            RIGHT, buff=0.9).move_to(DOWN * 0.5)
 
         self.play(FadeIn(comparison_display))  # Finishes at t=2s
 
@@ -306,7 +317,8 @@ class CopsAndRobbers(Scene):
 
         other_verts = VGroup(g.vertices["w"], g.vertices["z"])
         # CHANGED: Gather only the remaining edges that do not connect u and v directly
-        remaining_edges = VGroup(*[edge for key, edge in g.edges.items() if key != ("u", "v")])
+        remaining_edges = VGroup(
+            *[edge for key, edge in g.edges.items() if key != ("u", "v")])
         rest_of_graph = VGroup(other_verts, remaining_edges)
 
         # CHANGED: uv_edge now animates alongside uv_nodes at t=13s
@@ -315,7 +327,8 @@ class CopsAndRobbers(Scene):
         # --- NEW TIMED CHASE SEQUENCE (Fills the 9-second gap completely) ---
         # 1. Spawn tokens on their respective vertices
         cop = Dot(color=BLUE).scale(1.5).move_to(g.vertices["v"].get_center())
-        robber = Dot(color=RED).scale(1.5).move_to(g.vertices["u"].get_center())
+        robber = Dot(color=RED).scale(1.5).move_to(
+            g.vertices["u"].get_center())
 
         self.play(FadeIn(cop), FadeIn(robber), run_time=1)  # Finishes at t=15s
         self.wait(1)  # reaches t=16s
@@ -355,7 +368,8 @@ class CopsAndRobbers(Scene):
             0.5).next_to(g.vertices["v"], UP, buff=0.75)
         n_text = Text("N[u] ⊆ N[v]", font_size=36).to_edge(DOWN)
 
-        self.play(Create(pitfall_circ), Write(pitfall_text))  # Finishes at t=33s
+        self.play(Create(pitfall_circ), Write(
+            pitfall_text))  # Finishes at t=33s
 
         # DELAY 5: Wait until 39 seconds for the attack highlight to appear
         self.wait(4)  # reaches t=39s
@@ -367,8 +381,94 @@ class CopsAndRobbers(Scene):
 
         self.clear()
         self.play(Write(title))
+        self.wait(0.27)  # reaches local t=1.27s
 
-        # Dismantling Wheel Graph (W_6)
+        # --- Pitfalls in previous examples (1.27s ~ 17.97s, duration 16.7s) ---
+        # 1. Complete Graph K4
+        k4_vertices = [1, 2, 3, 4]
+        k4_edges = [(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]
+        k4 = Graph(k4_vertices, k4_edges, layout="circular").scale(
+            0.6).shift(LEFT * 4 + DOWN * 0.5)
+        k4_label = Text("Complete Graph").scale(0.4).next_to(k4, UP, buff=0.3)
+
+        # 2. Tree
+        tree_verts = [1, 2, 3, 4, 5, 6]
+        tree_edges = [(1, 2), (2, 3), (2, 4), (1, 5), (5, 6)]
+        tree = Graph(tree_verts, tree_edges, layout="tree",
+                     root_vertex=1).scale(0.6).shift(ORIGIN + DOWN * 0.5)
+        tree_label = Text("Tree").scale(0.4).next_to(tree, UP, buff=0.3)
+
+        # 3. Cycle C4
+        c4_verts = [1, 2, 3, 4]
+        c4_edges = [(1, 2), (2, 3), (3, 4), (4, 1)]
+        c4_layout = {1: UP*0.8 + LEFT*0.8, 2: UP*0.8 + RIGHT *
+                     0.8, 3: DOWN*0.8 + RIGHT*0.8, 4: DOWN*0.8 + LEFT*0.8}
+        c4 = Graph(c4_verts, c4_edges, layout=c4_layout).scale(
+            0.6).shift(RIGHT * 4 + DOWN * 0.5)
+        c4_label = Text("Cycle").scale(0.4).next_to(c4, UP, buff=0.3)
+
+        self.play(Create(k4), Create(tree), Create(c4), run_time=1.5)
+        self.play(Write(k4_label), Write(tree_label),
+                  Write(c4_label), run_time=1.5)
+
+        # Highlight pitfalls (all in complete graph, leaves in tree)
+        k4_pitfalls = VGroup(
+            *[Circle(color=RED, radius=0.2).move_to(k4.vertices[v]) for v in k4_vertices])
+        tree_pitfalls = VGroup(
+            *[Circle(color=RED, radius=0.2).move_to(tree.vertices[v]) for v in [3, 4, 6]])
+
+        self.play(Create(k4_pitfalls), Create(tree_pitfalls), run_time=1.5)
+        k4_sub = Text("All are pitfalls", color=RED).scale(
+            0.3).next_to(k4, DOWN)
+        tree_sub = Text("Leaves are pitfalls", color=RED).scale(
+            0.3).next_to(tree, DOWN)
+        c4_sub = Text("No pitfalls", color=YELLOW).scale(0.3).next_to(c4, DOWN)
+        self.play(Write(k4_sub), Write(tree_sub), Write(c4_sub), run_time=1.5)
+
+        self.wait(9.7)
+        self.play(FadeOut(k4, k4_label, tree, tree_label, c4, c4_label,
+                  k4_pitfalls, tree_pitfalls, k4_sub, tree_sub, c4_sub), run_time=1.0)
+
+        self.wait(0.03)  # reaches local t=18.0s
+
+        # --- Cycle with a pitfall (Converse is not true) (18.0s ~ 40.35s, duration 22.35s) ---
+        c4p_verts = [1, 2, 3, 4, 5]
+        c4p_edges = [(1, 2), (2, 3), (3, 4), (4, 1), (4, 5)]
+        c4p_layout = {1: UP + LEFT, 2: UP + RIGHT, 3: DOWN +
+                      RIGHT, 4: DOWN + LEFT, 5: DOWN*2 + LEFT*2}
+        c4p = Graph(c4p_verts, c4p_edges, layout=c4p_layout,
+                    labels=True).scale(1).shift(DOWN*0.5)
+        c4p_label = Text("Cycle with a Pitfall").scale(0.5).next_to(c4p, UP)
+
+        self.play(Create(c4p), Write(c4p_label), run_time=2.0)
+
+        # Highlight pitfall
+        c4p_pitfall = Circle(color=RED, radius=0.4).move_to(c4p.vertices[5])
+        c4p_pitfall_text = Text("Pitfall", color=RED).scale(
+            0.4).next_to(c4p_pitfall, DOWN)
+        self.play(Create(c4p_pitfall), Write(c4p_pitfall_text), run_time=1.5)
+        self.wait(5.0)
+
+        # "removing a pitfall from the graph does not change the winner"
+        self.play(FadeOut(c4p.vertices[5], c4p.edges[(
+            4, 5)], c4p_pitfall, c4p_pitfall_text), run_time=1.5)
+        c4_rem_label = Text("Smaller graph: Cycle (Robber Win)").scale(
+            0.5).next_to(c4p, UP)
+        self.play(Transform(c4p_label, c4_rem_label), run_time=1.5)
+        self.wait(9.35)
+        self.play(
+            *[FadeOut(c4p.vertices[v]) for v in [1, 2, 3, 4]],
+            *[FadeOut(c4p.edges[e]) for e in [(1, 2), (2, 3), (3, 4), (4, 1)]],
+            FadeOut(c4p_label),
+            run_time=1.5
+        )
+
+        self.wait(0.05)  # reaches local t=40.40s
+
+        self.clear()
+        self.play(Write(title), run_time=1.0)
+
+        # Dismantling Wheel Graph (W_6) (40.40s ~ 55.98s, duration 15.58s)
         w6_verts = [0, 1, 2, 3, 4, 5]
         w6_edges = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5),
                     (1, 2), (2, 3), (3, 4), (4, 5), (5, 1)]
@@ -377,8 +477,8 @@ class CopsAndRobbers(Scene):
         w6 = Graph(w6_verts, w6_edges, layout=w6_layout,
                    labels=True).scale(1.5).shift(DOWN*0.5)
 
-        self.play(Create(w6))
-        self.wait(1)
+        self.play(Create(w6), run_time=1.0)
+        self.wait(1.0)
 
         # Iteratively remove pitfalls (outer nodes)
         nodes_to_remove = [1, 2, 3, 4, 5]
@@ -387,7 +487,8 @@ class CopsAndRobbers(Scene):
                                edge in w6.edges.items() if node in e_tuple]
             self.play(
                 FadeOut(w6.vertices[node]),
-                *[FadeOut(e) for e in connected_edges]
+                *[FadeOut(e) for e in connected_edges],
+                run_time=1.0
             )
             self.wait(0.5)
 
@@ -395,28 +496,49 @@ class CopsAndRobbers(Scene):
             w6.vertices[0].get_center() + LEFT*0.2)
         robber_w = Dot(color=RED).scale(1.5).move_to(
             w6.vertices[0].get_center() + RIGHT*0.2)
-        center_text = Text("Cop Wins on remaining vertex!").next_to(
+        center_text = Text("1 vertex left = Cop Wins").next_to(
             w6.vertices[0], UP)
 
-        self.play(FadeIn(cop_w, robber_w), Write(center_text))
-        self.wait(3)
+        self.play(FadeIn(cop_w, robber_w), Write(center_text), run_time=1.0)
+        self.wait(1.0)
+
+        # Additional text for robber win condition
+        more_text = Text(">1 vertex left (no pitfalls) = Robber Wins", color=RED).scale(
+            0.8).next_to(center_text, UP, buff=0.5)
+        self.play(Write(more_text), run_time=1.0)
+
+        self.wait(2.08)
 
     def part4_isometric_path(self):
+        self.add_sound("media/audio/Michael_Part2.wav")
+        self.wait(1.12)  # REACHES local t=1.12s
+
         title = Tex("Part 4: The Isometric Path Lemma").to_edge(UP)
-        self.play(Write(title))
-        self.wait(1)
+        self.play(Write(title), run_time=1.0)
 
-        # Lemma explanation text
-        lemma_text = Tex(
-            r"If a Cop is on a shortest path $P$, \\ they can shadow the Robber and \\ prevent them from entering $P$."
-        ).scale(0.8).next_to(title, DOWN, buff=0.5)
+        # Introduction text (from 1.12s ~ 13.72s, duration 12.60s elapsed)
+        # We used 1.0s for the title, remaining 11.60s.
+        lemma_text = Text(
+            "What if a graph is too complex for one Cop?\nWe need the Cop Number.",
+            font_size=32
+        ).next_to(title, DOWN, buff=0.5)
 
-        self.play(Write(lemma_text), run_time=3)
-        self.wait(3)
+        self.play(Write(lemma_text), run_time=3.0)
+        self.wait(2.0)
+
+        lemma_text_2 = Text(
+            "But before we explore that,\nlet's look at the Isometric Path Lemma.",
+            font_size=32
+        ).next_to(title, DOWN, buff=0.5)
+        self.play(Transform(lemma_text, lemma_text_2), run_time=2.0)
+        self.wait(4.60)
+
+        # Finishes around t=14.72s
+        self.play(FadeOut(lemma_text), run_time=1.0)
+        # 13.90 ~ 28.45: Imagine a shortest path... Cop patrols and shadows...
+        # Wait a small bit. We actually went past 13.72, let's sync up. We overlap the graph build with 13.90.
 
         # Graph construction
-        # Shortest path P = {1, 2, 3, 4, 5}
-        # Other nodes R_nodes = {6, 7, 8} connected to P
         verts = [1, 2, 3, 4, 5, 6, 7, 8]
         edges = [(1, 2), (2, 3), (3, 4), (4, 5), (6, 2),
                  (7, 3), (8, 4), (6, 7), (7, 8)]
@@ -432,14 +554,12 @@ class CopsAndRobbers(Scene):
         }
 
         g = Graph(verts, edges, layout=layout, labels=True)
-        self.play(Create(g), run_time=2)
-        self.wait(2)
+        self.play(Create(g), run_time=2.0)
 
         # Highlight the shortest path P
         path_edges = [(1, 2), (2, 3), (3, 4), (4, 5)]
         highlight_anims = []
         for u, v in path_edges:
-            # Graph uses tuples matching input exactly or ordered. Let's use robust search
             edge_obj = g.edges.get((u, v)) or g.edges.get((v, u))
             if edge_obj:
                 highlight_anims.append(edge_obj.animate.set_color(YELLOW))
@@ -447,12 +567,11 @@ class CopsAndRobbers(Scene):
         for v in [1, 2, 3, 4, 5]:
             highlight_anims.append(g.vertices[v].animate.set_color(YELLOW))
 
-        self.play(*highlight_anims)
+        self.play(*highlight_anims, run_time=1.5)
 
         path_label = Tex(r"Shortest Path $P$", color=YELLOW).scale(
             0.7).next_to(g.vertices[1], DOWN)
-        self.play(FadeIn(path_label))
-        self.wait(2)
+        self.play(FadeIn(path_label), run_time=1.0)
 
         # Cop and Robber placements
         cop = Dot(color=BLUE).scale(1.5).move_to(g.vertices[3].get_center())
@@ -461,56 +580,58 @@ class CopsAndRobbers(Scene):
         robber = Dot(color=RED).scale(1.5).move_to(g.vertices[6].get_center())
         robber_label = Text("Robber", color=RED).scale(0.4).next_to(robber, UP)
 
-        self.play(FadeIn(cop, cop_label), FadeIn(robber, robber_label))
-        self.wait(3)
+        self.play(FadeIn(cop, cop_label), FadeIn(
+            robber, robber_label), run_time=1.0)
+        self.wait(8.23)  # Reaches local t=28.45s
 
-        # The Chase / Shadowing
+        self.wait(0.05)  # 28.50s - If the robber ever tries to step...
+
+        # The Chase / Shadowing (28.50s ~ 38.07s duration 9.57s)
         # Robber moves 6 -> 7
         self.play(
             robber.animate.move_to(g.vertices[7].get_center()),
-            robber_label.animate.next_to(g.vertices[7], UP)
+            robber_label.animate.next_to(g.vertices[7], UP),
+            run_time=0.8
         )
-        self.wait(1)
-
-        # Cop shadows by staying directly beneath the robber
+        # Cop shadows
         self.play(
             cop.animate.move_to(g.vertices[3].get_center()),
-            cop_label.animate.next_to(g.vertices[3], DOWN)
-        )  # Cop holds position correctly predicting shortest path mapping
-        self.wait(1)
+            cop_label.animate.next_to(g.vertices[3], DOWN),
+            run_time=0.4
+        )
 
         # Robber moves 7 -> 8
         self.play(
             robber.animate.move_to(g.vertices[8].get_center()),
-            robber_label.animate.next_to(g.vertices[8], UP)
+            robber_label.animate.next_to(g.vertices[8], UP),
+            run_time=0.8
         )
-        self.wait(1)
 
         # Cop shadows moving 3 -> 4
         self.play(
             cop.animate.move_to(g.vertices[4].get_center()),
-            cop_label.animate.next_to(g.vertices[4], DOWN)
+            cop_label.animate.next_to(g.vertices[4], DOWN),
+            run_time=0.5
         )
-        self.wait(2)
 
         # Robber tries to enter P at node 4
-        # Since cop is already at 4, robber gets caught instantly!
         self.play(
             robber.animate.move_to(g.vertices[4].get_center()),
             robber_label.animate.next_to(g.vertices[4], UP),
-            run_time=0.5
+            run_time=0.8
         )
+
         # Visual pop to signify capture
         capture_circle = Circle(color=RED, radius=0.5).move_to(g.vertices[4])
-        self.play(Create(capture_circle), run_time=0.5)
+        self.play(Create(capture_circle), run_time=0.3)
         self.play(FadeOut(capture_circle), FadeOut(
-            robber, robber_label), run_time=0.5)
-        self.wait(3)
+            robber, robber_label), run_time=0.4)
 
-        final_text = Tex(r"Robber is immediately caught upon entering $P$!").scale(
-            0.8).to_edge(DOWN)
-        self.play(Write(final_text))
-        self.wait(4)
+        final_text = Text("Instantly Caught!", color=RED).scale(
+            0.6).to_edge(DOWN)
+        self.play(Write(final_text), run_time=1.0)
+
+        self.wait(4.57)  # Reaches local t=38.07s
 
     def part5_planar_traps(self):
         # Optional: Add your specific audio file for Part 5 here if you have one recorded
