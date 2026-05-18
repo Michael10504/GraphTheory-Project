@@ -149,18 +149,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{A Lower Bound Theorem}
-    \begin{theorem}
-        Any graph $G$ with no 3-cycles or 4-cycles and $\delta(G) \ge n$ has $\mathcal{C}(G) \ge n$.
-    \end{theorem}
-    \begin{itemize}
-        \item \textit{Proof Sketch:} Place $n-1$ cops.
-        \item The robber can find a vertex $r$ not dominated by any of the $n-1$ cops.
-        \item Due to the absence of 3- and 4-cycles, after cops move, at most $n-1$ of the robber's neighbors are threatened.
-        \item Since the robber has at least $n$ neighbors (min degree $\ge n$), there is always at least one safe neighbor to continually move to!
-    \end{itemize}
-\end{frame}
-
 \begin{frame}{Isometric Path Lemma}
     \begin{lemma}[Isometric Path Lemma]
         Let $P$ be a shortest path between vertices $u, v \in V(G)$. With at least two cops in play, one cop on $P$ can prevent the robber from ever entering $P$. (If the robber steps on $P$, they are immediately caught).
@@ -175,6 +163,18 @@
         \item \textit{Idea:} Use 2 cops to control two shortest paths meeting at a vertex, forming a territorial boundary.
         \item Use the Jordan Curve Theorem on these paths and the 3rd cop on a crossing path to strictly reduce the robber's bounded territory at each stage.
         \item Eventually, the territory is strictly reduced until the robber is caught.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Lower Bound Theorem}
+    \begin{theorem}
+        Any graph $G$ with no 3-cycles or 4-cycles and $\delta(G) \ge n$ has $\mathcal{C}(G) \ge n$.
+    \end{theorem}
+    \begin{itemize}
+        \item \textit{Proof Sketch:} Place $n-1$ cops.
+        \item The robber can find a vertex $r$ not dominated by any of the $n-1$ cops.
+        \item Due to the absence of 3- and 4-cycles, after cops move, at most $n-1$ of the robber's neighbors are threatened.
+        \item Since the robber has at least $n$ neighbors (min degree $\ge n$), there is always at least one safe neighbor to continually move to!
     \end{itemize}
 \end{frame}
 
