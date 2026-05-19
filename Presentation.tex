@@ -153,6 +153,13 @@
     \begin{lemma}[Isometric Path Lemma]
         Let $P$ be a shortest path between vertices $u, v \in V(G)$. With at least two cops in play, one cop on $P$ can prevent the robber from ever entering $P$. (If the robber steps on $P$, they are immediately caught).
     \end{lemma}
+    \textit{Proof Sketch:}
+    \begin{itemize}
+        \item Cop maintains strategy ensuring $d(c,z) \le d(r,z)$ for all $z \in V(P)$.
+        \item If the robber threatens $z_0 \in V(P)$ by decreasing distance, the cop moves towards $z_0$.
+        \item Robber cannot threaten two vertices $x, y$ on opposite sides of the cop simultaneously, as $P$ is a shortest path (violates triangle inequality).
+        \item Thus, if the robber steps on $z \in V(P)$, $d(c,z) \le d(r,z) = 0$, meaning the cop captures them.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Planar Graphs}
